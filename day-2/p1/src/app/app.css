@@ -1,0 +1,37 @@
+.app-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 2rem;
+  max-width: 1280px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  align-items: start;
+}
+
+.sidebar-panel {
+  background: var(--bg-card, #ffffff);
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow, 0 4px 20px rgba(0, 0, 0, 0.04));
+  position: sticky;
+  top: 1.5rem;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.main-article-area {
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .app-layout {
+    grid-template-columns: 1fr;
+    margin: 1rem auto;
+    padding: 0 1rem;
+    gap: 1.5rem;
+  }
+
+  .sidebar-panel {
+    position: static;
+  }
+}

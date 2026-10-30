@@ -1,0 +1,49 @@
+@if (!results()) {
+  <div class="empty-state">
+    <div class="empty-state-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="36" height="36" aria-hidden="true">
+        <path d="M3 3v18h18" />
+        <path d="m19 9-5 5-4-4-3 3" />
+      </svg>
+    </div>
+    <h3>No Calculations Yet</h3>
+    <p>Enter your parameters above and click <strong>Calculate Projections</strong> to view your yearly growth.</p>
+  </div>
+} @else {
+  <div class="results-card">
+    <div class="results-header">
+      <div class="header-titles">
+        <h3>Annual Projections</h3>
+        <p class="results-subtitle">Year-by-year compounding trajectory</p>
+      </div>
+      <span class="horizon-badge">{{ results()?.length }} Year Horizon</span>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th class="col-year">Year</th>
+            <th class="col-val">Investment Value</th>
+            <th class="col-num">Interest (Year)</th>
+            <th class="col-num">Total Interest</th>
+            <th class="col-num">Invested Capital</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (result of results(); track result.year) {
+            <tr>
+              <td class="col-year">
+                <span class="year-badge">Yr {{ result.year }}</span>
+              </td>
+              <td class="col-val">{{ result.valueEndOfYear | currency }}</td>
+              <td class="col-num interest-cell">+{{ result.interest | currency }}</td>
+              <td class="col-num">{{ result.totalInterest | currency }}</td>
+              <td class="col-num capital-cell">{{ result.totalAmountInvested | currency }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+}

@@ -1,0 +1,64 @@
+<article class="tasks-article">
+  @if (user) {
+    <header class="tasks-header">
+      <div class="user-heading-group">
+        <img [src]="user.avatar" [alt]="user.name" class="heading-avatar" />
+        <div>
+          <h2>{{ user.name }}'s Tasks</h2>
+          <p class="tasks-meta">
+            {{ selectedUserTasks.length }} {{ selectedUserTasks.length === 1 ? 'task' : 'tasks' }} assigned
+          </p>
+        </div>
+      </div>
+
+      <button type="button" class="btn-add-task" (click)="onStartAddTask()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Add Task
+      </button>
+    </header>
+
+    @if (selectedUserTasks.length > 0) {
+      <ul class="tasks-grid">
+        @for (task of selectedUserTasks; track task.id) {
+          <li>
+            <app-task [task]="task" (complete)="onCompleteTask($event)" />
+          </li>
+        }
+      </ul>
+    } @else {
+      <div class="empty-state">
+        <div class="empty-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+            <line x1="9" y1="9" x2="15" y2="9"></line>
+            <line x1="9" y1="13" x2="15" y2="13"></line>
+            <line x1="9" y1="17" x2="11" y2="17"></line>
+          </svg>
+        </div>
+        <h3>No tasks found for {{ user.name }}</h3>
+        <p>This user currently has zero pending tasks. Click below to add their first task.</p>
+        <button type="button" class="btn-add-task secondary" (click)="onStartAddTask()">
+          + Add First Task
+        </button>
+      </div>
+    }
+
+    @if (isAddingTask) {
+      <app-new-task
+        [userId]="user.id"
+        [userName]="user.name"
+        (close)="onCloseAddTask()"
+        (add)="onAddTask($event)"
+      />
+    }
+  } @else {
+    <div class="select-user-placeholder">
+      <div class="placeholder-icon">👈</div>
+      <h2>Select a user to view their tasks</h2>
+      <p>Choose any team member from the sidebar to inspect their workload or assign new tasks.</p>
+    </div>
+  }
+</article>

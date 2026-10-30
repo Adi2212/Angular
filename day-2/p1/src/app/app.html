@@ -1,0 +1,15 @@
+<app-header />
+
+<main class="app-layout">
+  <aside class="sidebar-panel">
+    <app-user
+      [users]="users"
+      [selectedUserId]="selectedUser?.id"
+      (selectUser)="onSelectUser($event)"
+    />
+  </aside>
+
+  <section class="main-article-area">
+    <app-tasks [user]="selectedUser" />
+  </section>
+</main>

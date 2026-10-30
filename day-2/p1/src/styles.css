@@ -1,0 +1,271 @@
+/* Global CSS Reset, Design Tokens & Dark Theme */
+
+:root {
+  --bg-primary: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f1f5f9;
+  --bg-input: #ffffff;
+  --bg-modal: #ffffff;
+  --border-color: #e2e8f0;
+  --border-hover: #cbd5e1;
+  --border-subtle: #f1f5f9;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --badge-bg: #f1f5f9;
+  --badge-color: #475569;
+  --user-active-color: #4338ca;
+  --modal-backdrop: rgba(15, 23, 42, 0.65);
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --header-bg: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+  --header-border: rgba(255, 255, 255, 0.1);
+  --empty-state-bg: #f8fafc;
+  --transition-speed: 0.25s;
+}
+
+body.dark-theme,
+[data-theme='dark'] {
+  --bg-primary: #0b0f19;
+  --bg-card: #151d30;
+  --bg-card-hover: #1c263d;
+  --bg-input: #0e1526;
+  --bg-modal: #151d30;
+  --border-color: #27344e;
+  --border-hover: #3b4d70;
+  --border-subtle: #1c273e;
+  --text-primary: #ffffff; /* Crisp white for maximum contrast & visibility */
+  --text-secondary: #e2e8f0; /* Clear light slate */
+  --text-muted: #94a3b8; /* Balanced secondary text */
+  --badge-bg: #1e293b;
+  --badge-color: #e2e8f0;
+  --user-active-color: #ffffff;
+  --modal-backdrop: rgba(0, 0, 0, 0.8);
+  --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+  --card-shadow-hover: 0 10px 28px rgba(0, 0, 0, 0.6);
+  --header-bg: linear-gradient(135deg, #07090f 0%, #0d1322 50%, #151b32 100%);
+  --header-border: rgba(255, 255, 255, 0.08);
+  --empty-state-bg: #101626;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  min-height: 100vh;
+  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+
+button {
+  font-family: inherit;
+}
+
+input, textarea, select {
+  font-family: inherit;
+}
+
+/* ==========================================================================
+   Dark Theme Component Adaptations
+   ========================================================================== */
+
+/* Layout & Containers */
+body.dark-theme .sidebar-panel,
+body.dark-theme .tasks-article,
+body.dark-theme .card,
+body.dark-theme .modal-dialog {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+  box-shadow: var(--card-shadow) !important;
+}
+
+/* Headings & Text - Ensure full visibility in dark mode */
+body.dark-theme .user-heading-group h2,
+body.dark-theme .task-title-group h3,
+body.dark-theme .user-name,
+body.dark-theme .sidebar-title-row h3,
+body.dark-theme .modal-header h2,
+body.dark-theme .modal-title-group h2,
+body.dark-theme h1,
+body.dark-theme h2,
+body.dark-theme h3 {
+  color: #ffffff !important;
+}
+
+body.dark-theme .sidebar-instruction,
+body.dark-theme .tasks-meta,
+body.dark-theme .modal-subtitle {
+  color: var(--text-muted) !important;
+}
+
+body.dark-theme .modal-subtitle strong {
+  color: #c7d2fe !important;
+}
+
+/* User Selection Sidebar */
+body.dark-theme .user-btn {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+  color: #ffffff !important;
+}
+
+body.dark-theme .user-btn:hover {
+  background-color: var(--bg-card-hover) !important;
+  border-color: #6366f1 !important;
+}
+
+body.dark-theme .user-btn.active {
+  background: linear-gradient(135deg, #1e293b 0%, #2e3d5e 100%) !important;
+  border-color: #818cf8 !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.25) !important;
+}
+
+body.dark-theme .user-btn.active .user-name {
+  color: #ffffff !important;
+}
+
+body.dark-theme .user-name {
+  color: #ffffff !important;
+}
+
+body.dark-theme .user-badge {
+  background-color: var(--badge-bg) !important;
+  color: var(--badge-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+body.dark-theme .user-count {
+  background-color: #312e81 !important;
+  color: #c7d2fe !important;
+}
+
+/* Task Item */
+body.dark-theme .task-summary {
+  color: var(--text-secondary) !important;
+}
+
+body.dark-theme .task-id-badge {
+  background-color: var(--badge-bg) !important;
+  color: var(--text-secondary) !important;
+  border-color: var(--border-color) !important;
+}
+
+body.dark-theme .task-user-tag {
+  background-color: var(--badge-bg) !important;
+  color: var(--text-muted) !important;
+  border-color: var(--border-color) !important;
+}
+
+body.dark-theme .due-date {
+  color: var(--text-muted) !important;
+}
+
+body.dark-theme .due-date strong {
+  color: var(--text-secondary) !important;
+}
+
+body.dark-theme .complete-btn {
+  background-color: rgba(5, 150, 105, 0.2) !important;
+  border-color: rgba(5, 150, 105, 0.4) !important;
+  color: #34d399 !important;
+}
+
+body.dark-theme .complete-btn:hover {
+  background-color: #059669 !important;
+  color: #ffffff !important;
+  border-color: #047857 !important;
+}
+
+/* Dividers & Borders */
+body.dark-theme .tasks-header,
+body.dark-theme .sidebar-header,
+body.dark-theme .modal-header,
+body.dark-theme .task-footer {
+  border-color: var(--border-color) !important;
+}
+
+/* Empty States & Placeholders */
+body.dark-theme .empty-state,
+body.dark-theme .select-user-placeholder {
+  background-color: var(--empty-state-bg) !important;
+  border-color: var(--border-color) !important;
+}
+
+body.dark-theme .empty-state h3,
+body.dark-theme .select-user-placeholder h2 {
+  color: #ffffff !important;
+}
+
+body.dark-theme .empty-state p,
+body.dark-theme .select-user-placeholder p {
+  color: var(--text-muted) !important;
+}
+
+body.dark-theme .empty-icon {
+  background-color: #1e293b !important;
+  color: #818cf8 !important;
+}
+
+/* Forms & Dialogs */
+body.dark-theme .backdrop {
+  background-color: var(--modal-backdrop) !important;
+}
+
+body.dark-theme .form-group input,
+body.dark-theme .form-group textarea,
+body.dark-theme .form-group select {
+  background-color: var(--bg-input) !important;
+  border-color: var(--border-color) !important;
+  color: #ffffff !important;
+}
+
+body.dark-theme .form-group input:focus,
+body.dark-theme .form-group textarea:focus {
+  border-color: #818cf8 !important;
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.25) !important;
+}
+
+body.dark-theme .form-group input.readonly-input {
+  background-color: var(--badge-bg) !important;
+  color: var(--text-muted) !important;
+  border-color: var(--border-color) !important;
+}
+
+body.dark-theme .form-group label {
+  color: #ffffff !important;
+}
+
+body.dark-theme .form-group .help-text {
+  color: var(--text-muted) !important;
+}
+
+body.dark-theme .btn-cancel {
+  background-color: var(--badge-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-secondary) !important;
+}
+
+body.dark-theme .btn-cancel:hover {
+  background-color: var(--border-color) !important;
+  color: #ffffff !important;
+}
+
+body.dark-theme .close-btn {
+  color: var(--text-muted) !important;
+}
+
+body.dark-theme .close-btn:hover {
+  color: #ffffff !important;
+  background-color: var(--badge-bg) !important;
+}

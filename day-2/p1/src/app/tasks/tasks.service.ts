@@ -6,10 +6,29 @@ import { DUMMY_TASKS } from '../dummy-data';
   providedIn: 'root',
 })
 export class TasksService {
+  /**
+   * Internal tasks array initialized with default dummy data.
+   */
   private tasks: Task[] = DUMMY_TASKS;
 
   constructor() {
-    this.loadFromStorage();
+    // Check for tasks in localStorage; if not present, use the initial task array
+    const storedTasks =
+      typeof localStorage !== 'undefined'
+        ? localStorage.getItem('tasks') || localStorage.getItem('task')
+        : null;
+
+    if (storedTasks) {
+      try {
+        this.tasks = JSON.parse(storedTasks);
+      } catch {
+        // Fallback to task array if JSON parsing fails
+        this.tasks = DUMMY_TASKS;
+      }
+    } else {
+      // Not present in localStorage: use task array
+      this.tasks = DUMMY_TASKS;
+    }
   }
 
   /**
@@ -54,7 +73,7 @@ export class TasksService {
     };
 
     this.tasks = [newTask, ...this.tasks];
-    this.saveToStorage();
+    this.saveTasks();
     return newTask;
   }
 
@@ -63,10 +82,13 @@ export class TasksService {
    */
   removeTask(taskId: string): void {
     this.tasks = this.tasks.filter((task) => task.id !== taskId);
-    this.saveToStorage();
+    this.saveTasks();
   }
 
-  private saveToStorage(): void {
+  /**
+   * Persist current task list to localStorage.
+   */
+  private saveTasks(): void {
     if (typeof localStorage !== 'undefined') {
       try {
         localStorage.setItem('tasks', JSON.stringify(this.tasks));
@@ -76,17 +98,11 @@ export class TasksService {
     }
   }
 
-  private loadFromStorage(): void {
-    if (typeof localStorage !== 'undefined') {
-      try {
-        const storedTasks = localStorage.getItem('tasks');
-        if (storedTasks) {
-          this.tasks = JSON.parse(storedTasks);
-        }
-      } catch {
-        this.tasks = DUMMY_TASKS;
-      }
-    }
+  /**
+   * Backward-compatible alias for storage persistence.
+   */
+  private saveToStorage(): void {
+    this.saveTasks();
   }
 }
 

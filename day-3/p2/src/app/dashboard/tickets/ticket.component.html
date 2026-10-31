@@ -1,0 +1,35 @@
+<div class="tickets-container">
+  <div class="tickets-list-section">
+    <div class="tickets-summary">
+      <span class="count-pill">
+        {{ tickets.length }} {{ tickets.length === 1 ? 'Ticket' : 'Tickets' }}
+      </span>
+
+      <span class="status-pill status-open">
+        {{ openTicketsCount }} Open
+      </span>
+      <span class="status-pill status-closed">
+        {{ closedTicketsCount }} Closed
+      </span>
+    </div>
+
+    @if (tickets.length > 0) {
+      <ul class="tickets-list">
+        @for (ticket of tickets; track ticket.id) {
+          <li class="ticket-list-item">
+            <app-ticket-item [ticket]="ticket" (close)="onCloseTicket($event)" />
+          </li>
+        }
+      </ul>
+    } @else {
+      <div class="no-tickets-state">
+        <p>No tickets available at the moment.</p>
+        <small>Use the form below to create your first support ticket.</small>
+      </div>
+    }
+  </div>
+
+  <div class="new-ticket-section">
+    <app-new-ticket />
+  </div>
+</div>

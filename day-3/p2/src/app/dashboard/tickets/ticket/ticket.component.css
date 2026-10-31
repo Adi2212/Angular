@@ -1,0 +1,124 @@
+.ticket-card {
+  padding: 0.85rem 1rem;
+  border-radius: 4px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out;
+}
+
+.ticket-card:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.ticket-open {
+  border-left: 4px solid #6a3cb0;
+}
+
+.ticket-closed {
+  border-left: 4px solid #76737a;
+  background-color: #f8f8f8;
+  opacity: 0.85;
+}
+
+.ticket-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.ticket-info {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex: 1;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+
+.badge-open {
+  background-color: #eee8f2;
+  color: #6a3cb0;
+  border: 1px solid #6a3cb0;
+}
+
+.badge-closed {
+  background-color: #eee8f2;
+  color: #76737a;
+  border: 1px solid #76737a;
+}
+
+.ticket-title {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #3e3b3e;
+  font-weight: bold;
+}
+
+.ticket-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-toggle {
+  background-color: transparent;
+  color: #504e50;
+  border: 1px solid #76737a;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-toggle:hover {
+  background-color: #eee8f2;
+  color: #36166f;
+  border-color: #691ebe;
+}
+
+.btn-resolve {
+  background-color: #691ebe;
+  color: white;
+  border: none;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-resolve:hover {
+  background-color: #551b98;
+}
+
+.ticket-details {
+  margin-top: 0.75rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid #eee8f2;
+}
+
+.ticket-request {
+  margin: 0 0 0.35rem 0;
+  font-size: 0.85rem;
+  color: #4f4b53;
+  line-height: 1.45;
+}
+
+.ticket-id {
+  font-size: 0.75rem;
+  color: #76737a;
+}

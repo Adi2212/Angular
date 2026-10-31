@@ -1,0 +1,40 @@
+<div class="new-ticket-box">
+  <h3 class="new-ticket-title">Add New Ticket</h3>
+
+  <form (ngSubmit)="onSubmit()" #ticketForm="ngForm">
+    <div class="form-control">
+      <label for="title">Ticket Title</label>
+      <input
+        type="text"
+        id="title"
+        name="title"
+        [(ngModel)]="enteredTitle"
+        required
+        placeholder="Brief summary of the issue..."
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="form-control">
+      <label for="request">Request or Issue</label>
+      <textarea
+        id="request"
+        name="request"
+        rows="3"
+        [(ngModel)]="enteredRequest"
+        required
+        placeholder="Detailed explanation of the issue or requirement..."
+      ></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button
+        type="submit"
+        [disabled]="!enteredTitle.trim() || !enteredRequest.trim()"
+      >
+        Submit Ticket
+        <span class="icon">↗</span>
+      </button>
+    </div>
+  </form>
+</div>

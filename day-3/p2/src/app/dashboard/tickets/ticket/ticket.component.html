@@ -1,0 +1,29 @@
+<article [class]="'ticket-card ' + (ticket().status === 'closed' ? 'ticket-closed' : 'ticket-open')">
+  <div class="ticket-header">
+    <div class="ticket-info">
+      <span [class]="'status-badge ' + (ticket().status === 'closed' ? 'badge-closed' : 'badge-open')">
+        {{ ticket().status }}
+      </span>
+      <h3 class="ticket-title">{{ ticket().title }}</h3>
+    </div>
+
+    <div class="ticket-actions">
+      <button type="button" class="btn-toggle" (click)="onToggleDetails()">
+        {{ detailsVisible ? 'Hide' : 'Details' }}
+      </button>
+
+      @if (ticket().status === 'open') {
+        <button type="button" class="btn-resolve" (click)="onCloseTicket()">
+          Mark as Resolved
+        </button>
+      }
+    </div>
+  </div>
+
+  @if (detailsVisible) {
+    <div class="ticket-details">
+      <p class="ticket-request">{{ ticket().request }}</p>
+      <small class="ticket-id">Ticket ID: #{{ ticket().id }}</small>
+    </div>
+  }
+</article>

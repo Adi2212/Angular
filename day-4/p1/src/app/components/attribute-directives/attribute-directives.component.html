@@ -1,0 +1,178 @@
+<section class="directive-section">
+  <div class="section-header">
+    <div class="header-icon">🎨</div>
+    <div>
+      <h2>Attribute Directives Deep Dive</h2>
+      <p>Modifying behavior, styles, and appearances of existing DOM elements.</p>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- Built-in [ngClass] Showcase -->
+    <div class="card panel">
+      <div class="panel-header">
+        <h3>1. [ngClass] Dynamic Classes</h3>
+        <button class="copy-btn" [appCopyClipboard]="ngClassSnippet" appTooltip="Click to copy snippet">
+          📋 Copy Code
+        </button>
+      </div>
+      <p class="panel-desc">Applies classes dynamically based on boolean conditions, objects, or strings.</p>
+
+      <!-- Controls -->
+      <div class="controls-grid">
+        <label class="toggle-control">
+          <input type="checkbox" [(ngModel)]="isHighlighted">
+          <span>Highlight ('highlight-card')</span>
+        </label>
+        <label class="toggle-control">
+          <input type="checkbox" [(ngModel)]="isCompleted">
+          <span>Completed ('completed-task')</span>
+        </label>
+        <label class="toggle-control">
+          <input type="checkbox" [(ngModel)]="hasBorder">
+          <span>Glow Border ('glow-border')</span>
+        </label>
+        <label class="toggle-control">
+          <input type="checkbox" [(ngModel)]="hasShadow">
+          <span>Shadow ('elevation-shadow')</span>
+        </label>
+      </div>
+
+      <div class="select-row">
+        <label>Theme Variant:</label>
+        <select [(ngModel)]="cardVariant" class="custom-select">
+          <option value="standard">Standard Dark</option>
+          <option value="success">Success Emerald</option>
+          <option value="danger">Warning Rose</option>
+          <option value="gradient">Cosmic Gradient</option>
+        </select>
+      </div>
+
+      <!-- Live Preview -->
+      <div class="preview-area">
+        <div
+          class="demo-card"
+          [ngClass]="{
+            'highlight-card': isHighlighted,
+            'completed-task': isCompleted,
+            'glow-border': hasBorder,
+            'elevation-shadow': hasShadow,
+            'variant-standard': cardVariant === 'standard',
+            'variant-success': cardVariant === 'success',
+            'variant-danger': cardVariant === 'danger',
+            'variant-gradient': cardVariant === 'gradient'
+          }"
+        >
+          <div class="card-title">Live [ngClass] Element</div>
+          <p>This box dynamically changes classes in real-time as you toggle the controls above.</p>
+          <span class="badge">Active Classes: {{ (isHighlighted ? 'highlight-card ' : '') + (isCompleted ? 'completed ' : '') + cardVariant }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Built-in [ngStyle] Showcase -->
+    <div class="card panel">
+      <div class="panel-header">
+        <h3>2. [ngStyle] Dynamic Inline Styles</h3>
+        <button class="copy-btn" [appCopyClipboard]="ngStyleSnippet" appTooltip="Click to copy snippet">
+          📋 Copy Code
+        </button>
+      </div>
+      <p class="panel-desc">Applies dynamic inline CSS styles via expression objects and unit bindings.</p>
+
+      <!-- Controls -->
+      <div class="slider-controls">
+        <div class="control-row">
+          <label>Background Color:</label>
+          <input type="color" [(ngModel)]="cardBgColor" class="color-picker">
+          <code>{{ cardBgColor }}</code>
+        </div>
+        <div class="control-row">
+          <label>Font Size ({{ cardFontSize }}px):</label>
+          <input type="range" min="12" max="24" [(ngModel)]="cardFontSize">
+        </div>
+        <div class="control-row">
+          <label>Padding ({{ cardPadding }}px):</label>
+          <input type="range" min="8" max="40" [(ngModel)]="cardPadding">
+        </div>
+        <div class="control-row">
+          <label>Border Radius ({{ borderRadius }}px):</label>
+          <input type="range" min="0" max="32" [(ngModel)]="borderRadius">
+        </div>
+      </div>
+
+      <!-- Live Preview -->
+      <div class="preview-area">
+        <div
+          class="demo-card styled-demo"
+          [ngStyle]="{
+            'background-color': cardBgColor,
+            'color': textColor,
+            'font-size.px': cardFontSize,
+            'padding.px': cardPadding,
+            'border-radius.px': borderRadius
+          }"
+        >
+          <div class="card-title">Interactive [ngStyle] Box</div>
+          <p>Style properties applied inline directly with reactive Angular unit bindings.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Directives Demo Row -->
+  <div class="custom-directives-container">
+    <h3>3. Custom Attribute Directives & Host Listeners</h3>
+    <div class="grid-3">
+      <!-- Custom Highlight -->
+      <div
+        class="card custom-item"
+        appHighlight
+        [highlightColor]="'#38bdf825'"
+        [highlightBorder]="'#38bdf8'"
+        appTooltip="Directive reacts to mouseenter & mouseleave via @HostListener"
+      >
+        <span class="icon">✨</span>
+        <h4>[appHighlight] (Cyan)</h4>
+        <p>Hover over this card! Notice the smooth lift, shadow, and neon border glow.</p>
+        <code>appHighlight [highlightColor]="'#38bdf825'"</code>
+      </div>
+
+      <div
+        class="card custom-item"
+        appHighlight
+        [highlightColor]="'#a855f725'"
+        [highlightBorder]="'#a855f7'"
+        appTooltip="Configurable input highlight color"
+      >
+        <span class="icon">🔮</span>
+        <h4>[appHighlight] (Purple)</h4>
+        <p>Dynamic input customization allows varying the highlight theme per element.</p>
+        <code>appHighlight [highlightColor]="'#a855f725'"</code>
+      </div>
+
+      <!-- Tooltip Positions -->
+      <div class="card custom-item interactive-actions">
+        <span class="icon">💬</span>
+        <h4>[appTooltip] Directive</h4>
+        <p>Creates dynamic floating tooltip nodes via Renderer2 with auto-positioning.</p>
+        <div class="btn-group">
+          <button
+            class="action-btn top"
+            [appTooltip]="'🚀 Top tooltip created dynamically with Renderer2!'"
+            position="top"
+          >
+            Hover (Top)
+          </button>
+          <button
+            class="action-btn bottom"
+            [appTooltip]="'🎯 Bottom tooltip smoothly aligned under target!'"
+            position="bottom"
+          >
+            Hover (Bottom)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

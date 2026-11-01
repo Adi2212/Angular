@@ -1,0 +1,88 @@
+<section class="pipes-section">
+  <div class="section-header">
+    <div class="header-icon">🔄</div>
+    <div>
+      <h2>Pure vs. Impure Pipes Laboratory</h2>
+      <p>Understanding Angular change detection, object references, and performance implications.</p>
+    </div>
+  </div>
+
+  <div class="card panel">
+    <div class="panel-header">
+      <div>
+        <h3>Reference Mutation vs. Impure Cycles</h3>
+        <p class="panel-desc">
+          Pure pipes ignore array <code>.push()</code> because the memory reference doesn't change.
+          Impure pipes run on <em>every single</em> change detection cycle!
+        </p>
+      </div>
+      <button class="reset-btn" (click)="resetList()">↻ Reset Lab</button>
+    </div>
+
+    <!-- Input Bar & Action Buttons -->
+    <div class="actions-toolbar">
+      <input
+        type="text"
+        [(ngModel)]="newItemName"
+        placeholder="Enter item name (e.g., 'SolidJS')..."
+        class="name-input"
+      >
+      <button class="action-btn mutate" (click)="addMutatedInPlace()">
+        ⚡ Mutate In-Place (items.push)
+      </button>
+      <button class="action-btn immutable" (click)="addImmutable()">
+        ✨ Immutable Copy ([...items, new])
+      </button>
+      <button class="action-btn cd-tick" (click)="triggerChangeDetection()">
+        🔔 Trigger Change Detection ({{ changeDetectionTriggers }})
+      </button>
+    </div>
+
+    <!-- Comparison Grid -->
+    <div class="comparison-grid">
+      <!-- PURE PIPE COLUMN -->
+      <div class="comparison-column pure-col">
+        <div class="col-header">
+          <div>
+            <h4>Pure Pipe: | sort:'asc'</h4>
+            <span class="col-subtitle">pure: true (Default)</span>
+          </div>
+          <span class="exec-counter">Calls: {{ pureExecutionCount }}</span>
+        </div>
+
+        <div class="explanation-box">
+          Only recalculates when the <strong>array reference changes</strong> or input parameters change.
+          If you click <em>"Mutate In-Place"</em>, this list will <strong>NOT</strong> reflect the newly pushed item!
+        </div>
+
+        <ul class="items-list">
+          @for (item of items | sort:'asc'; track item) {
+            <li class="item-badge pure">{{ item }}</li>
+          }
+        </ul>
+      </div>
+
+      <!-- IMPURE PIPE COLUMN -->
+      <div class="comparison-column impure-col">
+        <div class="col-header">
+          <div>
+            <h4>Impure Pipe: | impureSort:'asc'</h4>
+            <span class="col-subtitle">pure: false</span>
+          </div>
+          <span class="exec-counter warning">Calls: {{ impureExecutionCount }}</span>
+        </div>
+
+        <div class="explanation-box">
+          Recalculates on <strong>every change detection cycle</strong> (keystrokes, button clicks, timeouts).
+          Immediately catches <code>items.push()</code>, but carries high CPU overhead on large datasets.
+        </div>
+
+        <ul class="items-list">
+          @for (item of items | impureSort:'asc'; track item) {
+            <li class="item-badge impure">{{ item }}</li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

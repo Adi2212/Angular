@@ -1,0 +1,210 @@
+<section class="pipes-section">
+  <div class="section-header">
+    <div class="header-icon">📊</div>
+    <div>
+      <h2>Built-in Angular Pipes</h2>
+      <p>Transforming text, dates, currencies, numbers, arrays, and objects in template expressions.</p>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- 1. Text Pipes -->
+    <div class="card panel">
+      <div class="panel-header">
+        <h3>1. Text Transformation Pipes</h3>
+        <span class="pipe-tag">UpperCase · LowerCase · TitleCase</span>
+      </div>
+      <p class="panel-desc">Transforms string capitalization dynamically without mutating source models.</p>
+
+      <div class="form-group">
+        <label>Input Text String:</label>
+        <input type="text" [(ngModel)]="textInput" class="styled-input">
+      </div>
+
+      <div class="results-list">
+        <div class="result-row">
+          <span class="label">Original:</span>
+          <code class="val">{{ textInput }}</code>
+        </div>
+        <div class="result-row">
+          <span class="label">{{ '{' }}{{ '{' }} text | uppercase {{ '}' }}{{ '}' }}:</span>
+          <code class="val highlight">{{ textInput | uppercase }}</code>
+        </div>
+        <div class="result-row">
+          <span class="label">{{ '{' }}{{ '{' }} text | lowercase {{ '}' }}{{ '}' }}:</span>
+          <code class="val">{{ textInput | lowercase }}</code>
+        </div>
+        <div class="result-row">
+          <span class="label">{{ '{' }}{{ '{' }} text | titlecase {{ '}' }}{{ '}' }}:</span>
+          <code class="val success">{{ textInput | titlecase }}</code>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. DatePipe -->
+    <div class="card panel">
+      <div class="panel-header">
+        <h3>2. DatePipe Formatting</h3>
+        <span class="pipe-tag">DatePipe</span>
+      </div>
+      <p class="panel-desc">Formats dates and timestamps into localized date strings.</p>
+
+      <div class="form-row">
+        <div class="form-group flex-1">
+          <label>Select Date:</label>
+          <input type="date" [(ngModel)]="selectedDate" class="styled-input">
+        </div>
+        <div class="form-group flex-1">
+          <label>Format Pattern:</label>
+          <select [(ngModel)]="dateFormat" class="styled-select">
+            @for (fmt of availableDateFormats; track fmt) {
+              <option [value]="fmt">{{ fmt }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="results-list">
+        <div class="result-row">
+          <span class="label">Raw Value:</span>
+          <code class="val">{{ selectedDate }}</code>
+        </div>
+        <div class="result-row">
+          <span class="label">Selected Format:</span>
+          <code class="val highlight">{{ parsedDate | date:dateFormat }}</code>
+        </div>
+        <div class="result-row">
+          <span class="label">date:'fullDate':</span>
+          <code class="val">{{ parsedDate | date:'fullDate' }}</code>
+        </div>
+        <div class="result-row">
+          <span class="label">date:'MMMM d, yyyy':</span>
+          <code class="val success">{{ parsedDate | date:'MMMM d, yyyy' }}</code>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Currency, Decimal & Percent Pipes -->
+  <div class="card panel full-width">
+    <div class="panel-header">
+      <h3>3. Financial & Numerical Pipes</h3>
+      <span class="pipe-tag">CurrencyPipe · DecimalPipe · PercentPipe</span>
+    </div>
+
+    <div class="controls-bar">
+      <div class="control-item">
+        <label>Currency Code:</label>
+        <select [(ngModel)]="selectedCurrency" class="styled-select">
+          @for (code of currencyCodes; track code) {
+            <option [value]="code">{{ code }}</option>
+          }
+        </select>
+      </div>
+      <div class="control-item">
+        <label>Display Format:</label>
+        <select [(ngModel)]="currencyDisplay" class="styled-select">
+          <option value="symbol">Symbol ($)</option>
+          <option value="code">Code (USD)</option>
+          <option value="symbol-narrow">Narrow Symbol ($)</option>
+        </select>
+      </div>
+      <div class="control-item">
+        <label>Digit Grouping (NumberPipe):</label>
+        <select [(ngModel)]="numberFormat" class="styled-select">
+          <option value="1.2-2">1.2-2 (Default 2 Decimals)</option>
+          <option value="1.0-0">1.0-0 (Rounded Integer)</option>
+          <option value="3.4-4">3.4-4 (4 Fixed Decimals)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Products Table with Pipe Formatting -->
+    <div class="table-responsive">
+      <table class="pipes-table">
+        <thead>
+          <tr>
+            <th>Product (TitleCase)</th>
+            <th>Original Price (Decimal)</th>
+            <th>Discount (Percent)</th>
+            <th>Final Price (Currency)</th>
+            <th>Release Date (DatePipe)</th>
+            <th>Stock Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of products; track item.id) {
+            <tr>
+              <td class="bold-cell">{{ item.name | titlecase }}</td>
+              <td>{{ item.price | number:numberFormat }}</td>
+              <td>
+                <span class="discount-badge">{{ item.discountRate | percent:'1.0-1' }} OFF</span>
+              </td>
+              <td class="price-cell">
+                {{ (item.price * (1 - item.discountRate)) | currency:selectedCurrency:currencyDisplay:'1.2-2' }}
+              </td>
+              <td>{{ item.releaseDate | date:'mediumDate' }}</td>
+              <td>
+                <span class="status-indicator" [class.in-stock]="item.inStock">
+                  {{ item.inStock ? 'In Stock' : 'Out of Stock' }}
+                </span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 4. SlicePipe, KeyValuePipe & JsonPipe -->
+  <div class="grid-2">
+    <!-- SlicePipe -->
+    <div class="card panel">
+      <div class="panel-header">
+        <h3>4. SlicePipe Array Slicing</h3>
+        <span class="pipe-tag">SlicePipe</span>
+      </div>
+      <p class="panel-desc">Creates a subset of a list or string directly in template: <code>items | slice:start:end</code></p>
+
+      <div class="slider-row">
+        <label>Start: {{ sliceStart }}</label>
+        <input type="range" min="0" [max]="products.length - 1" [(ngModel)]="sliceStart">
+        <label>End: {{ sliceEnd }}</label>
+        <input type="range" [min]="sliceStart + 1" [max]="products.length" [(ngModel)]="sliceEnd">
+      </div>
+
+      <div class="sliced-list">
+        @for (item of products | slice:sliceStart:sliceEnd; track item.id; let i = $index) {
+          <div class="sliced-item">
+            <span class="index">#{{ sliceStart + i + 1 }}</span>
+            <span class="title">{{ item.name | titlecase }}</span>
+            <span class="price">{{ item.price | currency:'USD' }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- KeyValuePipe & JsonPipe -->
+    <div class="card panel">
+      <div class="panel-header">
+        <h3>5. KeyValuePipe & JsonPipe</h3>
+        <span class="pipe-tag">KeyValuePipe · JsonPipe</span>
+      </div>
+      <p class="panel-desc">Iterates over JavaScript objects & formats JSON for visual inspection.</p>
+
+      <div class="keyvalue-grid">
+        @for (entry of serverConfig | keyvalue; track entry.key) {
+          <div class="kv-card">
+            <span class="k">{{ entry.key }}:</span>
+            <span class="v">{{ entry.value }}</span>
+          </div>
+        }
+      </div>
+
+      <div class="json-inspector">
+        <span class="json-label">Debug Output ({{ '{' }}{{ '{' }} serverConfig | json {{ '}' }}{{ '}' }}):</span>
+        <pre class="json-code">{{ serverConfig | json }}</pre>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,34 @@
+<header class="app-header">
+  <div class="header-container">
+    <div class="brand">
+      <div class="brand-badge">⚡ Day 4 · P1</div>
+      <div class="brand-info">
+        <h1>Angular Directives Showcase</h1>
+        <p>Built-in Attribute & Structural Directives + Custom Directives & Host Bindings</p>
+      </div>
+    </div>
+
+    <!-- Active User & Role Switcher -->
+    <div class="user-role-card">
+      <div class="user-avatar">{{ authService.currentUser().avatar }}</div>
+      <div class="user-details">
+        <span class="user-name">{{ authService.currentUser().name }}</span>
+        <div class="role-selector">
+          <label>Role:</label>
+          <div class="role-pills">
+            @for (role of roles; track role) {
+              <button
+                type="button"
+                class="role-pill"
+                [class.active]="authService.currentUser().role === role"
+                (click)="onSelectRole(role)"
+              >
+                {{ role | uppercase }}
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

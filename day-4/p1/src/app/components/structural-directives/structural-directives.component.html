@@ -1,0 +1,206 @@
+<section class="directive-section">
+  <div class="section-header">
+    <div class="header-icon">🏗️</div>
+    <div>
+      <h2>Structural Directives Deep Dive</h2>
+      <p>Modifying DOM layout and structure by adding, removing, and manipulating elements.</p>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- *ngIf & *ngSwitch Showcase -->
+    <div class="card panel">
+      <div class="panel-header">
+        <h3>1. *ngIf with else & *ngSwitch</h3>
+        <button class="copy-btn" [appCopyClipboard]="ngIfSnippet" appTooltip="Copy *ngIf snippet">
+          📋 Copy Code
+        </button>
+      </div>
+
+      <!-- *ngIf Controls -->
+      <div class="sub-section">
+        <div class="sub-header">
+          <strong>*ngIf Conditional Mounting</strong>
+          <button
+            class="toggle-btn"
+            [class.active]="showDetails"
+            (click)="showDetails = !showDetails"
+          >
+            {{ showDetails ? '👁️ Hide View' : '👁️ Show View' }}
+          </button>
+        </div>
+
+        <div class="preview-box">
+          <div *ngIf="showDetails; else hiddenTmpl" class="mounted-content">
+            <span class="badge success">Mounted via *ngIf</span>
+            <h4>Dynamic Dashboard Metric</h4>
+            <p>This DOM tree node is created in the ViewContainer only when <code>showDetails === true</code>.</p>
+          </div>
+          <ng-template #hiddenTmpl>
+            <div class="placeholder-content">
+              <span class="badge warning">Rendered via &lt;ng-template #hiddenTmpl&gt;</span>
+              <p>Content is currently unmounted from DOM tree by the structural directive.</p>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+
+      <!-- *ngSwitch Showcase -->
+      <div class="sub-section">
+        <div class="sub-header">
+          <strong>*ngSwitch Multi-case Evaluation</strong>
+          <div class="switch-pills">
+            <button
+              class="switch-pill"
+              [class.active]="selectedPriority === 'low'"
+              (click)="selectedPriority = 'low'"
+            >
+              Low
+            </button>
+            <button
+              class="switch-pill"
+              [class.active]="selectedPriority === 'medium'"
+              (click)="selectedPriority = 'medium'"
+            >
+              Medium
+            </button>
+            <button
+              class="switch-pill"
+              [class.active]="selectedPriority === 'high'"
+              (click)="selectedPriority = 'high'"
+            >
+              High
+            </button>
+            <button
+              class="switch-pill"
+              [class.active]="selectedPriority === 'critical'"
+              (click)="selectedPriority = 'critical'"
+            >
+              Critical
+            </button>
+          </div>
+        </div>
+
+        <div class="switch-result" [ngSwitch]="selectedPriority">
+          <div *ngSwitchCase="'low'" class="priority-box priority-low">
+            🟢 <strong>Low Priority:</strong> Routine maintenance task, no rush.
+          </div>
+          <div *ngSwitchCase="'medium'" class="priority-box priority-medium">
+            🟡 <strong>Medium Priority:</strong> Normal queue processing active.
+          </div>
+          <div *ngSwitchCase="'high'" class="priority-box priority-high">
+            🟠 <strong>High Priority:</strong> Requires immediate attention within 4 hours!
+          </div>
+          <div *ngSwitchCase="'critical'" class="priority-box priority-critical">
+            🔴 <strong>CRITICAL PRIORITY:</strong> P0 outage escalation protocol active!
+          </div>
+          <div *ngSwitchDefault class="priority-box">
+            ⚪ Default priority case fallback.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- *ngFor with Local Context Variables Showcase -->
+    <div class="card panel">
+      <div class="panel-header">
+        <h3>2. *ngFor with Local Variables & trackBy</h3>
+        <button class="copy-btn" [appCopyClipboard]="ngForSnippet" appTooltip="Copy *ngFor snippet">
+          📋 Copy Code
+        </button>
+      </div>
+
+      <!-- Add Item Form -->
+      <div class="add-item-bar">
+        <input
+          type="text"
+          [(ngModel)]="newItemTitle"
+          placeholder="New Directive Exercise..."
+          (keyup.enter)="addItem()"
+          class="text-input"
+        >
+        <button (click)="addItem()" class="add-btn">+ Add Item</button>
+      </div>
+
+      <!-- Collection List -->
+      <div class="items-list">
+        <div
+          *ngFor="let item of items;
+                  let i = index;
+                  let isFirst = first;
+                  let isLast = last;
+                  let isEven = even;
+                  let isOdd = odd;
+                  let total = count;
+                  trackBy: trackByItemId"
+          class="item-row"
+          [class.even-row]="isEven"
+          [class.first-row]="isFirst"
+        >
+          <div class="item-meta">
+            <span class="index-badge">#{{ i + 1 }}</span>
+            <div class="item-text">
+              <span class="item-title">{{ item.title }}</span>
+              <div class="flags">
+                <span *ngIf="isFirst" class="flag first">FIRST</span>
+                <span *ngIf="isLast" class="flag last">LAST</span>
+                <span class="flag parity">{{ isEven ? 'EVEN' : 'ODD' }}</span>
+                <span class="flag count">{{ i + 1 }} of {{ total }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="item-actions">
+            <button
+              class="status-pill"
+              [class.completed]="item.status === 'completed'"
+              [class.in-progress]="item.status === 'in-progress'"
+              (click)="toggleStatus(item)"
+              appTooltip="Click to cycle status"
+            >
+              {{ item.status }}
+            </button>
+            <button
+              class="delete-btn"
+              (click)="removeItem(item.id)"
+              appTooltip="Remove item from array"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Structural Directive: *appRepeat -->
+  <div class="custom-structural-card card">
+    <div class="panel-header">
+      <div>
+        <h3>3. Custom Structural Directive: *appRepeat</h3>
+        <p class="panel-desc">Uses <code>TemplateRef</code> and <code>ViewContainerRef</code> to repeat templates N times dynamically with template context.</p>
+      </div>
+      <button class="copy-btn" [appCopyClipboard]="repeatSnippet" appTooltip="Copy *appRepeat snippet">
+        📋 Copy Code
+      </button>
+    </div>
+
+    <div class="repeat-controls">
+      <label>Repetition Count: <strong>{{ repeatCount }}</strong></label>
+      <input type="range" min="1" max="8" [(ngModel)]="repeatCount" class="range-slider">
+    </div>
+
+    <div class="repeat-grid">
+      <div
+        *appRepeat="repeatCount; let i = index; let isFirst = first; let isLast = last; let isEven = even"
+        class="repeat-tile"
+        [class.even-tile]="isEven"
+        [class.final-tile]="isLast"
+      >
+        <span class="tile-number">0{{ i }}</span>
+        <h4>Step {{ i }} of {{ repeatCount }}</h4>
+        <p>{{ isFirst ? '🚀 Origin Step' : isLast ? '🏁 Milestone Reached' : '🔄 Iteration Stage' }}</p>
+      </div>
+    </div>
+  </div>
+</section>

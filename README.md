@@ -120,6 +120,38 @@ Angular/
 │       ├── angular.json
 │       ├── package.json
 │       └── README.md
+├── day-4/
+│   ├── p1/                    # Day 4 - Project 1: Directives Deep Dive (Built-in, Custom Attributes & Structural *appAuth)
+│   │   ├── src/
+│   │   │   ├── app/
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── attribute-directives/  # [ngClass], [ngStyle], [(ngModel)]
+│   │   │   │   │   ├── structural-directives/ # *ngIf, *ngFor, *ngSwitch, *appRepeat
+│   │   │   │   │   ├── safe-links/            # a[appSafeLink] with confirmation & query params
+│   │   │   │   │   └── role-auth/             # *appAuth structural role gate
+│   │   │   │   ├── directives/                # Custom attribute & structural directives
+│   │   │   │   ├── services/                  # AuthService with signal role hierarchy
+│   │   │   │   └── header/                    # Interactive header with role switcher
+│   │   │   ├── main.ts
+│   │   │   └── styles.css
+│   │   ├── angular.json
+│   │   ├── package.json
+│   │   └── README.md
+│   └── p2/                    # Day 4 - Project 2: Pipes Deep Dive (Built-in, Custom, Pure vs Impure Lab & AsyncPipe)
+│       ├── src/
+│       │   ├── app/
+│       │   │   ├── components/
+│       │   │   │   ├── builtin-pipes/         # Date, Currency, Decimal, Slice, KeyValue, Json
+│       │   │   │   ├── custom-pipes/          # Temperature, FileSize, TimeAgo, Filter
+│       │   │   │   ├── pure-impure/           # Interactive Pure vs Impure Change Detection Lab
+│       │   │   │   └── async-pipe/            # Live RxJS Observable Ticker & Promise
+│       │   │   ├── pipes/                     # Pure and impure standalone custom pipes
+│       │   │   └── header/                    # Live clock header with DatePipe
+│       │   ├── main.ts
+│       │   └── styles.css
+│       ├── angular.json
+│       ├── package.json
+│       └── README.md
 ├── .gitignore
 └── README.md
 ```
@@ -135,6 +167,8 @@ Angular/
 | [`day-2/p2/`](./day-2/p2) | **Investment Calculator** | Signals (`signal`, `computed`), `inject()`, `[(ngModel)]`, `CurrencyPipe`, Dark Glassmorphism UI | **4400** |
 | [`day-3/p1/`](./day-3/p1) | **EasyTask Debugging** | Standalone Components, Signal Inputs, Control Flow (`@if`, `@for`), Task Debugging | **4200** |
 | [`day-3/p2/`](./day-3/p2) | **Components Deep Dive** | Dashboard Architecture, `input.required`, Signal-based `TicketsService`, Subcomponents (`new-ticket`, `ticket`), Scoped CSS | **4200** |
+| [`day-4/p1/`](./day-4/p1) | **Directives Showcase** | `[ngClass]`, `[ngStyle]`, `*ngIf`, `*ngFor`, `*ngSwitch`, `a[appSafeLink]`, `*appAuth`, `*appRepeat` | **4200** |
+| [`day-4/p2/`](./day-4/p2) | **Pipes Showcase** | `DatePipe`, `CurrencyPipe`, `JsonPipe`, Pure vs Impure Change Detection Lab, `AsyncPipe` | **4300** |
 
 ---
 
@@ -257,6 +291,64 @@ Navigate to: [http://localhost:4200/](http://localhost:4200/)
 
 ---
 
+### Day 4 - Project 1 (`day-4/p1`): Directives Deep Dive & Interactive Showcase
+A dedicated showcase exploring Angular Built-in and Custom Directives, DOM manipulation, host listeners, and structural view container lifecycles:
+- **Built-in Attribute Directives**:
+  - `[ngClass]`: Multi-condition dynamic class binding (highlight, completed, glow, cosmic gradient variants).
+  - `[ngStyle]`: Real-time reactive inline styling (background color picker, font size slider, padding, border radius).
+  - `[(ngModel)]`: Two-way data binding from `FormsModule` linking form controls to active directives.
+- **Built-in Structural Directives**:
+  - `*ngIf`: Conditional mounting with `<ng-template #hiddenTmpl>` fallback blocks.
+  - `*ngFor`: Rich iteration utilizing all local context variables: `index`, `first`, `last`, `even`, `odd`, `count`, and `trackBy`.
+  - `*ngSwitch` / `*ngSwitchCase` / `*ngSwitchDefault`: Dynamic priority level status blocks.
+- **Custom Attribute Directives**:
+  - `a[appSafeLink]`: Intercepts link clicks, warns user on leaving external domains, sets `target="_blank"`, `rel="noopener noreferrer"`, and appends query parameter `?from=directives-showcase`.
+  - `[appHighlight]`: `@HostListener` driven hover elevation, dynamic shadow, and configurable highlight borders.
+  - `[appTooltip]`: Floating tooltip nodes injected into the DOM via `Renderer2` with automatic coordinate positioning.
+  - `[appCopyClipboard]`: One-click clipboard copy utility with live "✓ Copied!" badge transition.
+- **Custom Structural Directives**:
+  - `*appAuth="requiredRole"`: Evaluates active user permission levels from `AuthService` (Admin, Editor, Viewer, Guest) using `ViewContainerRef.createEmbeddedView()` and `clear()` to dynamically mount or completely destroy elements in the DOM.
+  - `*appRepeat="count; let i = index; let isLast = last"`: Repeats template nodes N times without dummy TypeScript arrays.
+
+#### Running Day 4 - Project 1:
+```bash
+cd day-4/p1
+npm start
+```
+Navigate to: [http://localhost:4200/](http://localhost:4200/)
+
+---
+
+### Day 4 - Project 2 (`day-4/p2`): Pipes Deep Dive & Interactive Laboratory
+An extensive exploration of Angular Built-in and Custom Pipes, change detection mechanics, pure vs. impure behavior, and reactive streams:
+- **Built-in Pipes**:
+  - `DatePipe`: Date formatting with various localized patterns (`'short'`, `'medium'`, `'fullDate'`, `'MMMM d, yyyy'`).
+  - `UpperCasePipe` · `LowerCasePipe` · `TitleCasePipe`: Text casing transformations.
+  - `CurrencyPipe`: Dynamic currency symbol/code selection (`USD`, `EUR`, `GBP`, `INR`, `JPY`) with decimal precision.
+  - `DecimalPipe` (`number`) & `PercentPipe`: Number formatting and percentage discounts.
+  - `SlicePipe`: Dynamic start and end range slicing for arrays and strings.
+  - `KeyValuePipe` & `JsonPipe`: Object key/value iteration and live JSON debug inspector.
+- **Custom Utility Pipes**:
+  - `| temperature:'C':'F':precision`: Converts between Celsius and Fahrenheit with degree symbols.
+  - `| fileSize:precision`: Formats raw byte integers into human-readable units (`B`, `KB`, `MB`, `GB`).
+  - `| timeAgo`: Computes humanized relative elapsed time ("just now", "12 minutes ago", "2 hours ago").
+  - `| filterBy:searchQuery`: Real-time multi-field array search filter.
+- **Pure vs. Impure Pipes Laboratory**:
+  - Side-by-side interactive comparison demonstrating why pure pipes (`pure: true`) ignore in-place array mutations (`array.push()`) because memory references do not change.
+  - Demonstrates how immutable updates (`[...array, item]`) trigger pure pipes.
+  - Demonstrates how impure pipes (`pure: false`) re-run on every change detection cycle with real-time execution call counters.
+- **Reactive Stream Handling (`AsyncPipe`)**:
+  - Automatically subscribes to continuous live RxJS `Observable` tickers (`liveTicker$ | async`) and native JavaScript Promises (`userPromise$ | async`), automatically destroying subscriptions to prevent memory leaks.
+
+#### Running Day 4 - Project 2:
+```bash
+cd day-4/p2
+npm start
+```
+Navigate to: [http://localhost:4300/](http://localhost:4300/)
+
+---
+
 ## 🛠️ Build Projects
 
 ```bash
@@ -274,4 +366,10 @@ cd ../day-3/p1 && npm run build -- --configuration development
 
 # Day 3 / p2
 cd ../day-3/p2 && npm run build -- --configuration development
+
+# Day 4 / p1 (Directives)
+cd ../day-4/p1 && npm run build -- --configuration development
+
+# Day 4 / p2 (Pipes)
+cd ../day-4/p2 && npm run build -- --configuration development
 ```

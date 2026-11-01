@@ -1,0 +1,87 @@
+<section class="pipes-section">
+  <div class="section-header">
+    <div class="header-icon">⚡</div>
+    <div>
+      <h2>AsyncPipe Observables & Promises</h2>
+      <p>Unwraps values from asynchronous streams with automatic subscribe/unsubscribe lifecycle handling.</p>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- Live Observable Ticker via | async -->
+    <div class="card panel">
+      <div class="panel-header">
+        <div>
+          <h3>1. Live Observable Stream (RxJS interval)</h3>
+          <span class="pipe-tag">| async</span>
+        </div>
+        <span class="live-pulse">● LIVE STREAM</span>
+      </div>
+      <p class="panel-desc">
+        <code>liveTicker$ | async</code> automatically subscribes to the Observable and destroys subscription when the component unmounts.
+      </p>
+
+      <div class="ticker-list">
+        @if (liveTicker$ | async; as tickers) {
+          @for (ticker of tickers; track ticker.symbol) {
+            <div class="ticker-card" [class.trend-up]="ticker.trend === 'up'" [class.trend-down]="ticker.trend === 'down'">
+              <div class="symbol-col">
+                <span class="symbol-name">{{ ticker.symbol }}</span>
+                <span class="ticker-time">{{ ticker.timestamp | date:'HH:mm:ss' }}</span>
+              </div>
+
+              <div class="price-col">
+                <span class="price">{{ ticker.price | currency:'USD':'symbol':'1.2-2' }}</span>
+                <span class="change-delta" [class.positive]="ticker.change >= 0" [class.negative]="ticker.change < 0">
+                  {{ ticker.change >= 0 ? '+' : '' }}{{ ticker.change | currency:'USD':'symbol':'1.2-2' }}
+                </span>
+              </div>
+            </div>
+          }
+        } @else {
+          <div class="loading-state">Connecting to reactive ticker stream...</div>
+        }
+      </div>
+    </div>
+
+    <!-- Async Promise unwrapping -->
+    <div class="card panel">
+      <div class="panel-header">
+        <div>
+          <h3>2. Asynchronous Promise Unwrapping</h3>
+          <span class="pipe-tag">userPromise$ | async</span>
+        </div>
+        <button class="reload-btn" (click)="reloadPromise()">↻ Re-fetch</button>
+      </div>
+      <p class="panel-desc">
+        Unwraps native JavaScript Promises directly inside Angular template tags with zero manual <code>.then()</code> callbacks.
+      </p>
+
+      <div class="promise-result-container">
+        @if (userPromise$ | async; as user) {
+          <div class="user-card-async">
+            <div class="avatar-badge">👩‍💻</div>
+            <div class="user-info">
+              <h4>{{ user.name }}</h4>
+              <span class="role">{{ user.role }}</span>
+              <div class="metrics">
+                <span>User ID: <code>{{ user.id }}</code></span>
+                <span>Latency: <code>{{ user.responseTimeMs }}ms</code></span>
+              </div>
+            </div>
+          </div>
+        } @else {
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <span>Resolving asynchronous Promise...</span>
+          </div>
+        }
+      </div>
+
+      <div class="code-explain">
+        <h4>Template Syntax:</h4>
+        <code>&#64;if (userPromise$ | async; as user) &#123; ... &#125;</code>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,70 @@
+<section class="directive-section">
+  <div class="section-header">
+    <div class="header-icon">🔐</div>
+    <div>
+      <h2>Custom Structural Directive: *appAuth</h2>
+      <p>Role-based view mounting & destruction using ViewContainerRef & TemplateRef.</p>
+    </div>
+  </div>
+
+  <div class="card panel">
+    <div class="panel-header">
+      <div>
+        <h3>Permission-Gated Viewports</h3>
+        <p class="panel-desc">
+          Current Active Role: <span class="active-role-tag">{{ authService.currentUser().role | uppercase }}</span>.
+          Elements guarded by <code>*appAuth</code> do not exist in the DOM unless authorized.
+        </p>
+      </div>
+      <button class="copy-btn" [appCopyClipboard]="authDirectiveSnippet" appTooltip="Copy *appAuth snippet">
+        📋 Copy Code
+      </button>
+    </div>
+
+    <!-- Live Permission Zones -->
+    <div class="permission-zones">
+      <!-- Admin Zone (*appAuth="'admin'") -->
+      <div *appAuth="'admin'" class="zone-card admin-zone">
+        <div class="zone-badge">🛡️ ADMIN ONLY (Requires 'admin')</div>
+        <h4>Database Cluster & Disaster Recovery</h4>
+        <p>Full read/write execution access to production infrastructure.</p>
+        <div class="zone-actions">
+          <button class="danger-btn" (click)="purgeLogs()">⚠️ Purge System Audit Logs</button>
+          <span class="active-indicator">● Active ViewContainer View</span>
+        </div>
+      </div>
+
+      <!-- Editor Zone (*appAuth="'editor'") -->
+      <div *appAuth="'editor'" class="zone-card editor-zone">
+        <div class="zone-badge">✍️ EDITOR ACCESS (Requires 'editor' or higher)</div>
+        <h4>Content Management & Draft Publishing</h4>
+        <p>You can create, modify, and publish application articles and exercises.</p>
+        <div class="editor-tools">
+          <button class="primary-btn">➕ New Article</button>
+          <button class="secondary-btn">📤 Publish Release</button>
+        </div>
+      </div>
+
+      <!-- Viewer Zone (*appAuth="'viewer'") -->
+      <div *appAuth="'viewer'" class="zone-card viewer-zone">
+        <div class="zone-badge">👁️ VIEWER ACCESS (Requires 'viewer' or higher)</div>
+        <h4>Audit Logs & Read-Only Insights</h4>
+        <div class="logs-container">
+          @for (log of systemLogs; track log) {
+            <div class="log-line">{{ log }}</div>
+          }
+        </div>
+      </div>
+
+      <!-- Guest Fallback (If current role is guest) -->
+      @if (authService.currentUser().role === 'guest') {
+        <div class="zone-card guest-fallback">
+          <div class="zone-badge">🔒 GUEST ACCOUNT</div>
+          <h4>Restricted Access</h4>
+          <p>You are browsing as Guest. None of the protected <code>*appAuth</code> directives rendered in the DOM.</p>
+          <p class="hint">Use the role switcher in the header above to elevate permissions to <strong>Viewer</strong>, <strong>Editor</strong>, or <strong>Admin</strong>!</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>

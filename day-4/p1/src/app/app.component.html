@@ -1,0 +1,59 @@
+<app-header></app-header>
+
+<main class="main-container">
+  <!-- Navigation Filter Pills -->
+  <nav class="tabs-nav">
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'all'"
+      (click)="setActiveTab('all')"
+    >
+      🌟 All Showcases
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'attribute'"
+      (click)="setActiveTab('attribute')"
+    >
+      🎨 Attribute Directives ([ngClass], [ngStyle])
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'structural'"
+      (click)="setActiveTab('structural')"
+    >
+      🏗️ Structural Directives (*ngIf, *ngFor, *ngSwitch)
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'safelink'"
+      (click)="setActiveTab('safelink')"
+    >
+      🔗 Safe Link Directive (a[appSafeLink])
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'auth'"
+      (click)="setActiveTab('auth')"
+    >
+      🔐 Role Guard Directive (*appAuth)
+    </button>
+  </nav>
+
+  <!-- Showcase Content based on active tab -->
+  @if (activeTab === 'all' || activeTab === 'attribute') {
+    <app-attribute-directives></app-attribute-directives>
+  }
+
+  @if (activeTab === 'all' || activeTab === 'structural') {
+    <app-structural-directives></app-structural-directives>
+  }
+
+  @if (activeTab === 'all' || activeTab === 'safelink') {
+    <app-safe-links></app-safe-links>
+  }
+
+  @if (activeTab === 'all' || activeTab === 'auth') {
+    <app-role-auth></app-role-auth>
+  }
+</main>

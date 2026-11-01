@@ -1,0 +1,269 @@
+.pipes-section {
+  margin-bottom: 2.5rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.header-icon {
+  font-size: 2rem;
+  background: rgba(14, 165, 233, 0.15);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: 1px solid rgba(14, 165, 233, 0.3);
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #f8fafc;
+}
+
+.section-header p {
+  margin: 0.25rem 0 0;
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 1.5rem;
+}
+
+.card.panel {
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.panel-header h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #f1f5f9;
+}
+
+.pipe-tag {
+  background: rgba(14, 165, 233, 0.15);
+  color: #38bdf8;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-family: monospace;
+  margin-top: 0.25rem;
+  display: inline-block;
+}
+
+.live-pulse {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #10b981;
+  letter-spacing: 0.05em;
+  animation: pulseGreen 1.5s infinite;
+}
+
+@keyframes pulseGreen {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.panel-desc {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.ticker-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.ticker-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 1.1rem;
+  background: #0f172a;
+  border-radius: 10px;
+  border-left: 4px solid #64748b;
+  transition: all 0.3s ease;
+}
+
+.ticker-card.trend-up {
+  border-left-color: #10b981;
+}
+
+.ticker-card.trend-down {
+  border-left-color: #ef4444;
+}
+
+.symbol-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.symbol-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #f8fafc;
+}
+
+.ticker-time {
+  font-size: 0.72rem;
+  color: #64748b;
+  font-family: monospace;
+}
+
+.price-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
+}
+
+.price-col .price {
+  font-family: monospace;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #f8fafc;
+}
+
+.change-delta {
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.change-delta.positive {
+  color: #34d399;
+}
+
+.change-delta.negative {
+  color: #f87171;
+}
+
+.reload-btn {
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.35rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.promise-result-container {
+  background: #0f172a;
+  border-radius: 12px;
+  padding: 1.25rem;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.user-card-async {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.avatar-badge {
+  font-size: 2.2rem;
+  background: rgba(14, 165, 233, 0.15);
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(14, 165, 233, 0.3);
+}
+
+.user-info h4 {
+  margin: 0 0 0.2rem;
+  font-size: 1.1rem;
+  color: #f8fafc;
+}
+
+.user-info .role {
+  font-size: 0.82rem;
+  color: #38bdf8;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.user-info .metrics {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.user-info .metrics code {
+  color: #10b981;
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #0ea5e9;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.code-explain {
+  background: rgba(0, 0, 0, 0.25);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.code-explain h4 {
+  margin: 0 0 0.35rem;
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.code-explain code {
+  font-family: monospace;
+  font-size: 0.82rem;
+  color: #38bdf8;
+}

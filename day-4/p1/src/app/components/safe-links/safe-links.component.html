@@ -1,0 +1,94 @@
+<section class="directive-section">
+  <div class="section-header">
+    <div class="header-icon">🔗</div>
+    <div>
+      <h2>Custom Directive: a[appSafeLink]</h2>
+      <p>Enhancing anchor tags to intercept clicks, verify navigation, and inject telemetry parameters.</p>
+    </div>
+  </div>
+
+  <div class="card panel">
+    <div class="panel-header">
+      <div>
+        <h3>Safe External Navigation Directive</h3>
+        <p class="panel-desc">
+          Restricts and wraps <code>&lt;a&gt;</code> tags. When clicked, it displays a confirmation prompt, sets
+          <code>target="_blank"</code>, <code>rel="noopener noreferrer"</code>, and automatically appends
+          <code>?from=...</code> query parameter.
+        </p>
+      </div>
+      <button class="copy-btn" [appCopyClipboard]="safeLinkSnippet" appTooltip="Copy SafeLink snippet">
+        📋 Copy Code
+      </button>
+    </div>
+
+    <!-- Parameter Configuration -->
+    <div class="config-bar">
+      <div class="input-field">
+        <label>Query Param Identifier:</label>
+        <input type="text" [(ngModel)]="customAppName" class="styled-input">
+      </div>
+      <div class="input-field flex-grow">
+        <label>Test URL:</label>
+        <input type="text" [(ngModel)]="customUrl" class="styled-input">
+      </div>
+    </div>
+
+    <!-- Interactive Links Grid -->
+    <div class="links-grid">
+      <div class="link-card">
+        <div class="link-info">
+          <h4>Angular Developer Documentation</h4>
+          <p>Official Angular guide on Directives and Component architecture.</p>
+        </div>
+        <a
+          [href]="customUrl"
+          [appSafeLink]="customAppName"
+          confirmMessage="Navigating to Official Angular Documentation. Continue?"
+          class="nav-link"
+        >
+          Visit Angular Docs ↗
+        </a>
+      </div>
+
+      <div class="link-card">
+        <div class="link-info">
+          <h4>TypeScript Documentation</h4>
+          <p>Official handbook covering advanced decorators and types.</p>
+        </div>
+        <a
+          href="https://www.typescriptlang.org"
+          [appSafeLink]="customAppName"
+          confirmMessage="Leaving to TypeScript website. Continue?"
+          class="nav-link"
+        >
+          Visit TypeScript ↗
+        </a>
+      </div>
+
+      <div class="link-card">
+        <div class="link-info">
+          <h4>MDN Web Docs</h4>
+          <p>Mozilla Developer Network reference for DOM and Web APIs.</p>
+        </div>
+        <a
+          href="https://developer.mozilla.org"
+          [appSafeLink]="customAppName"
+          confirmMessage="Visiting MDN Web Docs. Continue?"
+          class="nav-link"
+        >
+          Visit MDN Docs ↗
+        </a>
+      </div>
+    </div>
+
+    <div class="directive-features">
+      <h4>Directive Mechanics Explained:</h4>
+      <ul>
+        <li><strong>Selector Restriction:</strong> <code>a[appSafeLink]</code> only attaches to <code>&lt;a&gt;</code> anchor tags.</li>
+        <li><strong>Host Listener:</strong> Uses <code>host: &#123; '(click)': 'onConfirmLeavePage($event)' &#125;</code> to intercept user clicks before the browser navigates.</li>
+        <li><strong>ElementRef Injection:</strong> Dynamically enhances DOM element with security headers (<code>rel="noopener"</code>) and appends <code>?from={{ customAppName }}</code> to the URL.</li>
+      </ul>
+    </div>
+  </div>
+</section>

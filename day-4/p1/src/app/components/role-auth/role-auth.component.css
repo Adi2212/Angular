@@ -1,0 +1,248 @@
+.directive-section {
+  margin-bottom: 2.5rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.header-icon {
+  font-size: 2rem;
+  background: rgba(239, 68, 68, 0.15);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #f8fafc;
+}
+
+.section-header p {
+  margin: 0.25rem 0 0;
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.card.panel {
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.panel-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #f1f5f9;
+}
+
+.panel-desc {
+  color: #94a3b8;
+  font-size: 0.88rem;
+  margin: 0.35rem 0 0;
+}
+
+.active-role-tag {
+  background: #6366f1;
+  color: #ffffff;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+
+.copy-btn {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.permission-zones {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.zone-card {
+  border-radius: 12px;
+  padding: 1.25rem;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.zone-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.admin-zone {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.admin-zone .zone-badge {
+  color: #f87171;
+}
+
+.admin-zone h4 {
+  margin: 0 0 0.35rem;
+  color: #fca5a5;
+  font-size: 1.05rem;
+}
+
+.admin-zone p {
+  margin: 0 0 1rem;
+  color: #cbd5e1;
+  font-size: 0.85rem;
+}
+
+.zone-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.danger-btn {
+  background: #dc2626;
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.danger-btn:hover {
+  background: #b91c1c;
+  box-shadow: 0 0 15px rgba(220, 38, 38, 0.4);
+}
+
+.active-indicator {
+  font-size: 0.75rem;
+  color: #10b981;
+}
+
+.editor-zone {
+  background: rgba(168, 85, 247, 0.08);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.editor-zone .zone-badge {
+  color: #c084fc;
+}
+
+.editor-zone h4 {
+  margin: 0 0 0.35rem;
+  color: #e9d5ff;
+  font-size: 1.05rem;
+}
+
+.editor-zone p {
+  margin: 0 0 1rem;
+  color: #cbd5e1;
+  font-size: 0.85rem;
+}
+
+.editor-tools {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.primary-btn {
+  background: #8b5cf6;
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.secondary-btn {
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.viewer-zone {
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.viewer-zone .zone-badge {
+  color: #38bdf8;
+}
+
+.viewer-zone h4 {
+  margin: 0 0 0.75rem;
+  color: #bae6fd;
+  font-size: 1.05rem;
+}
+
+.logs-container {
+  background: #0f172a;
+  border-radius: 8px;
+  padding: 0.85rem;
+  font-family: monospace;
+  font-size: 0.78rem;
+  color: #94a3b8;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.guest-fallback {
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px dashed rgba(148, 163, 184, 0.3);
+  text-align: center;
+  padding: 2rem;
+}
+
+.guest-fallback h4 {
+  margin: 0.5rem 0;
+  color: #f1f5f9;
+}
+
+.guest-fallback p {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.88rem;
+}
+
+.guest-fallback .hint {
+  margin-top: 0.75rem;
+  color: #cbd5e1;
+  font-size: 0.82rem;
+}

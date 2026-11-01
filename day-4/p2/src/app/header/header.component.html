@@ -1,0 +1,19 @@
+<header class="app-header">
+  <div class="header-container">
+    <div class="brand">
+      <div class="brand-badge">⚡ Day 4 · P2</div>
+      <div class="brand-info">
+        <h1>Angular Pipes Showcase</h1>
+        <p>Built-in Pipes · Custom Pipes · Pure vs Impure Change Detection · Async Stream unwrapping</p>
+      </div>
+    </div>
+
+    <!-- Real-time Clock utilizing DatePipe -->
+    <div class="clock-card">
+      <span class="clock-label">LIVE SYSTEM CLOCK (DatePipe)</span>
+      <div class="clock-time">
+        {{ currentTime | date:'EEEE, MMM d, y' }} · <span class="time-digit">{{ currentTime | date:'HH:mm:ss' }}</span>
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,59 @@
+<app-header></app-header>
+
+<main class="main-container">
+  <!-- Navigation Filter Pills -->
+  <nav class="tabs-nav">
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'all'"
+      (click)="setActiveTab('all')"
+    >
+      🌟 All Showcases
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'builtin'"
+      (click)="setActiveTab('builtin')"
+    >
+      📊 Built-in Pipes (Date, Currency, Slice, Json)
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'custom'"
+      (click)="setActiveTab('custom')"
+    >
+      🧪 Custom Utility Pipes (Temperature, FileSize, TimeAgo)
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'pure-impure'"
+      (click)="setActiveTab('pure-impure')"
+    >
+      🔄 Pure vs. Impure Pipes Lab
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'async'"
+      (click)="setActiveTab('async')"
+    >
+      ⚡ Async Pipe (RxJS Streams & Promises)
+    </button>
+  </nav>
+
+  <!-- Showcase Content based on active tab -->
+  @if (activeTab === 'all' || activeTab === 'builtin') {
+    <app-builtin-pipes></app-builtin-pipes>
+  }
+
+  @if (activeTab === 'all' || activeTab === 'custom') {
+    <app-custom-pipes></app-custom-pipes>
+  }
+
+  @if (activeTab === 'all' || activeTab === 'pure-impure') {
+    <app-pure-impure></app-pure-impure>
+  }
+
+  @if (activeTab === 'all' || activeTab === 'async') {
+    <app-async-pipe></app-async-pipe>
+  }
+</main>

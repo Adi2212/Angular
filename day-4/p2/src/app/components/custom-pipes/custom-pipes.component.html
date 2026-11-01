@@ -1,0 +1,107 @@
+<section class="pipes-section">
+  <div class="section-header">
+    <div class="header-icon">🧪</div>
+    <div>
+      <h2>Custom Pipes Playground</h2>
+      <p>Building reusable transformation pipelines: Temperature, File Size, Time Ago, and Filter.</p>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- 1. Temperature Conversion Pipe -->
+    <div class="card panel">
+      <div class="panel-header">
+        <h3>1. Temperature Converter Pipe</h3>
+        <span class="pipe-tag">| temperature:'C':'F'</span>
+      </div>
+      <p class="panel-desc">Calculates conversion formulas & attaches localized unit symbols.</p>
+
+      <div class="slider-group">
+        <div class="slider-label">
+          <span>Input Temp: <strong>{{ currentCelsius }} °C</strong></span>
+          <span>Precision: {{ tempPrecision }}</span>
+        </div>
+        <input type="range" min="-20" max="60" step="0.5" [(ngModel)]="currentCelsius" class="temp-slider">
+      </div>
+
+      <div class="temp-display-grid">
+        <div class="temp-box celsius">
+          <span class="unit-label">Input (Celsius)</span>
+          <span class="temp-val">{{ currentCelsius | temperature:'C':'C':tempPrecision }}</span>
+        </div>
+        <div class="arrow">➔</div>
+        <div class="temp-box fahrenheit">
+          <span class="unit-label">Output (Fahrenheit)</span>
+          <span class="temp-val">{{ currentCelsius | temperature:'C':'F':tempPrecision }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. File Size Formatter Pipe -->
+    <div class="card panel">
+      <div class="panel-header">
+        <h3>2. File Size Formatter Pipe</h3>
+        <span class="pipe-tag">| fileSize:precision</span>
+      </div>
+      <p class="panel-desc">Converts raw byte integers into human-readable data units (B, KB, MB, GB).</p>
+
+      <div class="slider-group">
+        <div class="slider-label">
+          <span>Raw Bytes: <code>{{ rawBytes | number }}</code></span>
+          <span>Decimal Places: {{ filePrecision }}</span>
+        </div>
+        <input type="range" min="1024" max="5368709120" step="1048576" [(ngModel)]="rawBytes" class="size-slider">
+      </div>
+
+      <div class="filesize-result">
+        <span class="size-badge">{{ rawBytes | fileSize:filePrecision }}</span>
+        <div class="size-presets">
+          <button (click)="rawBytes = 512" class="preset-btn">512 B</button>
+          <button (click)="rawBytes = 48592184" class="preset-btn">46 MB</button>
+          <button (click)="rawBytes = 2147483648" class="preset-btn">2 GB</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. TimeAgo & Filter Pipes Demonstration -->
+  <div class="card panel full-width">
+    <div class="panel-header">
+      <div>
+        <h3>3. Real-Time Event Stream with TimeAgo & Filter Pipes</h3>
+        <p class="panel-desc">
+          <code>| timeAgo</code> computes elapsed duration relative to now;
+          <code>| filterBy:searchQuery</code> filters items in real time.
+        </p>
+      </div>
+      <button class="add-event-btn" (click)="addRecentEvent()">+ Add Recent Ping (Just Now)</button>
+    </div>
+
+    <div class="search-bar">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        placeholder="Filter events by message or level (e.g. 'warning', 'database', 'health')..."
+        class="search-input"
+      >
+      <span class="search-count">
+        Matching: {{ (events | filterBy:searchQuery).length }} / {{ events.length }}
+      </span>
+    </div>
+
+    <div class="events-list">
+      @for (evt of events | filterBy:searchQuery; track evt.id) {
+        <div class="event-row" [class]="'level-' + evt.level">
+          <div class="event-info">
+            <span class="level-indicator">{{ evt.level | uppercase }}</span>
+            <span class="message">{{ evt.message }}</span>
+          </div>
+          <div class="event-time">
+            <span class="time-ago">{{ evt.timestamp | timeAgo }}</span>
+            <span class="absolute-time">{{ evt.timestamp | date:'HH:mm:ss' }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

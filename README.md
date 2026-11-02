@@ -152,6 +152,41 @@ Angular/
 │       ├── angular.json
 │       ├── package.json
 │       └── README.md
+├── day-5/
+│   ├── p1/                    # Day 5 - Project 1: Services Deep Dive (Dependency Injection, Signals & InjectionToken)
+│   │   ├── src/
+│   │   │   ├── app/
+│   │   │   │   ├── tasks/
+│   │   │   │   │   ├── new-task/          # Add task component with inject()
+│   │   │   │   │   ├── tasks-list/        # Filtered task list with computed()
+│   │   │   │   │   │   └── task-item/     # Task item with status update & InjectionToken
+│   │   │   │   │   ├── task.model.ts      # Task interfaces & TASK_STATUS_OPTIONS InjectionToken
+│   │   │   │   │   ├── task.service.ts    # Encapsulated state (private signal + asReadonly)
+│   │   │   │   │   ├── tasks.component.ts
+│   │   │   │   │   └── tasks.component.html
+│   │   │   │   ├── app.component.ts
+│   │   │   │   └── app.component.html
+│   │   │   ├── main.ts
+│   │   │   └── styles.css
+│   │   ├── angular.json
+│   │   ├── package.json
+│   │   └── README.md
+│   └── p2/                    # Day 5 - Project 2: Change Detection Deep Dive (Zone.js, OnPush & Signals)
+│       ├── src/
+│       │   ├── app/
+│       │   │   ├── counter/               # Counter with Zone pollution avoidance (runOutsideAngular)
+│       │   │   ├── info-message/          # Static component optimized with OnPush
+│       │   │   ├── messages/              # Message subsystem with shared MessagesService
+│       │   │   │   ├── messages-list/     # OnPush list consuming signals directly
+│       │   │   │   ├── new-message/       # OnPush input form triggering service
+│       │   │   │   └── messages.service.ts# Singleton service with signal state
+│       │   │   ├── app.component.ts
+│       │   │   └── app.component.html
+│       │   ├── main.ts
+│       │   └── styles.css
+│       ├── angular.json
+│       ├── package.json
+│       └── README.md
 ├── .gitignore
 └── README.md
 ```
@@ -169,6 +204,8 @@ Angular/
 | [`day-3/p2/`](./day-3/p2) | **Components Deep Dive** | Dashboard Architecture, `input.required`, Signal-based `TicketsService`, Subcomponents (`new-ticket`, `ticket`), Scoped CSS | **4200** |
 | [`day-4/p1/`](./day-4/p1) | **Directives Showcase** | `[ngClass]`, `[ngStyle]`, `*ngIf`, `*ngFor`, `*ngSwitch`, `a[appSafeLink]`, `*appAuth`, `*appRepeat` | **4200** |
 | [`day-4/p2/`](./day-4/p2) | **Pipes Showcase** | `DatePipe`, `CurrencyPipe`, `JsonPipe`, Pure vs Impure Change Detection Lab, `AsyncPipe` | **4300** |
+| [`day-5/p1/`](./day-5/p1) | **Services Deep Dive** | Dependency Injection, `inject()`, Signal Encapsulation (`asReadonly`), Custom `InjectionToken` | **4200** |
+| [`day-5/p2/`](./day-5/p2) | **Change Detection Deep Dive** | Zone.js Dirty Checking, `ChangeDetectionStrategy.OnPush`, Signal Reactivity, Zone Pollution Avoidance | **4200** |
 
 ---
 
@@ -349,6 +386,50 @@ Navigate to: [http://localhost:4300/](http://localhost:4300/)
 
 ---
 
+### Day 5 - Project 1 (`day-5/p1`): Services & Dependency Injection Deep Dive
+An in-depth implementation of modern Angular Dependency Injection architectures, signal state encapsulation, and configuration tokens:
+- **Centralized `TaskService`**:
+  - Implements state encapsulation: `#tasks = signal<Task[]>([])` kept private, exposed via `allTasks = this.tasks.asReadonly()`.
+  - Immutable status updates preventing direct state mutation outside service methods.
+- **Modern Dependency Injection (`inject()`)**:
+  - Replaces traditional constructor injection with constructor-less `inject()` throughout all components.
+- **Hierarchical Dependency Injection & `InjectionToken`**:
+  - Defines `TASK_STATUS_OPTIONS` custom `InjectionToken` and `taskStatusOptionsProvider`.
+  - Injected into `TaskItemComponent` and `TasksListComponent` to dynamically render status dropdown options with `@for`.
+- **Computed Filtering**:
+  - `TasksListComponent` uses `computed()` to reactively filter tasks (`all`, `open`, `in-progress`, `done`) tracking by unique ID (`track task.id`).
+
+#### Running Day 5 - Project 1:
+```bash
+cd day-5/p1
+npm start
+```
+Navigate to: [http://localhost:4200/](http://localhost:4200/)
+
+---
+
+### Day 5 - Project 2 (`day-5/p2`): Change Detection Deep Dive
+A comprehensive study and interactive diagnostic lab demonstrating how Angular coordinates view updates, Zone.js event triggers, and optimizations:
+- **Zone.js Tree-Wide Traversal Visualizer**:
+  - Every component includes a diagnostic `debugOutput` getter logging when template bindings re-evaluate during Change Detection cycles.
+- **`ChangeDetectionStrategy.OnPush` Optimization**:
+  - Applied across `InfoMessageComponent`, `CounterComponent`, `MessagesComponent`, `MessagesListComponent`, and `NewMessageComponent`.
+  - Drastically limits re-evaluations: static components and unaffected branches skip CD cycles completely.
+- **Zone Pollution Prevention**:
+  - Uses `NgZone.runOutsideAngular()` inside `CounterComponent` to run background timers without triggering unnecessary global CD ticks.
+- **Shared State with Signals**:
+  - Centralized `MessagesService` managing `messages` signal with `asReadonly()`.
+  - Direct consumption in `MessagesListComponent` without prop drilling, reacting seamlessly under `OnPush`.
+
+#### Running Day 5 - Project 2:
+```bash
+cd day-5/p2
+npm start
+```
+Navigate to: [http://localhost:4200/](http://localhost:4200/)
+
+---
+
 ## 🛠️ Build Projects
 
 ```bash
@@ -372,4 +453,10 @@ cd ../day-4/p1 && npm run build -- --configuration development
 
 # Day 4 / p2 (Pipes)
 cd ../day-4/p2 && npm run build -- --configuration development
+
+# Day 5 / p1 (Services)
+cd ../day-5/p1 && npm run build -- --configuration development
+
+# Day 5 / p2 (Change Detection)
+cd ../day-5/p2 && npm run build -- --configuration development
 ```

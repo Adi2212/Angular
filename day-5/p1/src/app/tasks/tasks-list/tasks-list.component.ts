@@ -16,7 +16,7 @@ export class TasksListComponent {
 
   tasks = computed(() => {
     const filter = this.selectedFilter();
-    const allTasks = this.taskService.tasks();
+    const allTasks = this.taskService.allTasks();
 
     switch (filter) {
       case 'open':

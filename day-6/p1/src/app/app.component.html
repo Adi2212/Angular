@@ -1,0 +1,466 @@
+<header class="app-header">
+  <img src="rxjs-logo.png" alt="The RxJS logo" class="hero-logo" />
+  <h1>Understanding RxJS & Observables</h1>
+  <p class="subtitle">Working with "Streams of Data", Operators, and Angular Interoperability</p>
+
+  <!-- Interactive Quick Action -->
+  <div class="primary-hero-action">
+    <button class="primary-btn pulse-on-hover" (click)="onClick()">
+      🔥 Click Stream Trigger
+    </button>
+    <button class="ghost-btn" (click)="onResetClick()" [disabled]="clickCount() === 0">
+      Reset Counter
+    </button>
+    <div class="quick-stats">
+      <span class="stat-pill">Signal Count: <strong>{{ clickCount() }}</strong></span>
+      <span class="stat-pill accent">Mapped (x2): <strong>{{ clickCountDoubled() }}</strong></span>
+      <span class="stat-pill success">Even Only: <strong>{{ clickCountEven() }}</strong></span>
+    </div>
+  </div>
+</header>
+
+<!-- Navigation Tabs -->
+<nav class="nav-tabs">
+  <button
+    class="tab-pill"
+    [class.active]="activeTab() === 'all'"
+    (click)="setActiveTab('all')"
+  >
+    🌟 All Lessons
+  </button>
+  <button
+    class="tab-pill"
+    [class.active]="activeTab() === 'basics'"
+    (click)="setActiveTab('basics')"
+  >
+    1️⃣ Stream Basics & Interval
+  </button>
+  <button
+    class="tab-pill"
+    [class.active]="activeTab() === 'operators'"
+    (click)="setActiveTab('operators')"
+  >
+    2️⃣ Pipeable Operators Lab
+  </button>
+  <button
+    class="tab-pill"
+    [class.active]="activeTab() === 'custom'"
+    (click)="setActiveTab('custom')"
+  >
+    3️⃣ Custom Observable
+  </button>
+  <button
+    class="tab-pill"
+    [class.active]="activeTab() === 'interop'"
+    (click)="setActiveTab('interop')"
+  >
+    4️⃣ Signals ⇄ RxJS Interop
+  </button>
+  <button
+    class="tab-pill"
+    [class.active]="activeTab() === 'subjects'"
+    (click)="setActiveTab('subjects')"
+  >
+    5️⃣ Subject & BehaviorSubject
+  </button>
+</nav>
+
+<main class="dashboard-grid">
+  <!-- ======================================================== -->
+  <!-- LESSON 1: STREAM BASICS & INTERVAL (toSignal vs manual) -->
+  <!-- ======================================================== -->
+  @if (activeTab() === 'all' || activeTab() === 'basics') {
+    <section class="lesson-card">
+      <div class="card-header">
+        <span class="lesson-badge">Lesson 1 & 2</span>
+        <h2>Observables & Subscription Lifecycle</h2>
+      </div>
+      <p class="card-desc">
+        Observables represent continuous streams of values over time. Unlike Promises which resolve once, an Observable can emit multiple values until it completes or errors.
+      </p>
+
+      <div class="split-columns">
+        <!-- toSignal Continuous Interval -->
+        <div class="sub-panel">
+          <div class="panel-tag info">Automatic Cleanup (toSignal)</div>
+          <h3><code>interval(1000)</code> Stream</h3>
+          <p class="panel-sub">Converted directly to a Signal using <code>toSignal()</code> with auto-teardown.</p>
+          <div class="display-meter">
+            <span class="meter-label">Emissions Count:</span>
+            <span class="meter-value live-glow">{{ intervalSignal() }}</span>
+          </div>
+          <small class="code-note">
+            <code>intervalSignal = toSignal(interval(1000), &#123; initialValue: 0 &#125;)</code>
+          </small>
+        </div>
+
+        <!-- Manual Interval with Subscription -->
+        <div class="sub-panel">
+          <div class="panel-tag warning">Manual Subscription (DestroyRef)</div>
+          <h3>Managed Subscription Stream</h3>
+          <p class="panel-sub">
+            Subscribed via <code>.subscribe()</code> with mapped values (x2) and <code>DestroyRef.onDestroy()</code> teardown to prevent memory leaks.
+          </p>
+          <div class="display-meter">
+            <span class="meter-label">Manual Stream Value:</span>
+            <span class="meter-value" [class.live-glow]="isManualIntervalActive()">
+              {{ manualIntervalValue() }}
+            </span>
+          </div>
+
+          <div class="button-group">
+            <button
+              class="action-btn success"
+              (click)="startManualInterval()"
+              [disabled]="isManualIntervalActive()"
+            >
+              ▶️ Subscribe Stream
+            </button>
+            <button
+              class="action-btn danger"
+              (click)="stopManualInterval()"
+              [disabled]="!isManualIntervalActive()"
+            >
+              ⏹️ Unsubscribe
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  }
+
+  <!-- ======================================================== -->
+  <!-- LESSON 2: PIPEABLE OPERATORS LAB                         -->
+  <!-- ======================================================== -->
+  @if (activeTab() === 'all' || activeTab() === 'operators') {
+    <section class="lesson-card">
+      <div class="card-header">
+        <span class="lesson-badge">Lesson 3</span>
+        <h2>RxJS Pipeable Operators Laboratory</h2>
+      </div>
+      <p class="card-desc">
+        Operators allow you to transform, filter, and compose streams using <code>.pipe()</code> without mutating the original source.
+      </p>
+
+      <div class="split-columns">
+        <!-- Debounce & Distinct Input Stream -->
+        <div class="sub-panel">
+          <div class="panel-tag purple">debounceTime(400) + distinctUntilChanged()</div>
+          <h3>Asynchronous Typeahead Stream</h3>
+          <p class="panel-sub">Keystrokes are pushed to a <code>Subject</code> and only emitted after 400ms of inactivity.</p>
+
+          <div class="input-wrapper">
+            <input
+              type="text"
+              class="text-input"
+              placeholder="Type rapidly to test debouncing..."
+              [value]="searchQuery()"
+              (input)="onSearchInput($event)"
+            />
+          </div>
+
+          <div class="output-preview">
+            <div class="preview-row">
+              <span class="muted-label">Instant Input:</span>
+              <span class="preview-val">"{{ searchQuery() }}"</span>
+            </div>
+            <div class="preview-row">
+              <span class="muted-label">Debounced Output:</span>
+              <span class="preview-val highlight">"{{ debouncedSearchValue() }}"</span>
+            </div>
+            <div class="preview-row">
+              <span class="muted-label">Debounced Stream Emissions:</span>
+              <span class="badge-mini">{{ searchEmissionsCount() }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Map & Filter Visualizer -->
+        <div class="sub-panel">
+          <div class="panel-tag success">map() & filter()</div>
+          <h3>Mathematical Stream Transformations</h3>
+          <p class="panel-sub">Change the input value to observe how <code>map</code> transforms and <code>filter</code> gates the stream.</p>
+
+          <div class="slider-control">
+            <label for="opSlider">Input Value: <strong>{{ operatorInputNumber() }}</strong></label>
+            <input
+              id="opSlider"
+              type="range"
+              min="1"
+              max="20"
+              [value]="operatorInputNumber()"
+              (input)="updateOperatorInput(+$any($event.target).value)"
+            />
+          </div>
+
+          <div class="pipeline-flow">
+            <div class="pipe-node">
+              <span class="node-title">Input</span>
+              <span class="node-val">{{ operatorInputNumber() }}</span>
+            </div>
+            <span class="flow-arrow">➔ <code>map(v => v * 3)</code> ➔</span>
+            <div class="pipe-node">
+              <span class="node-title">Mapped</span>
+              <span class="node-val">{{ operatorMappedResult() }}</span>
+            </div>
+            <span class="flow-arrow">➔ <code>filter(isEven)</code> ➔</span>
+            <div class="pipe-node" [class.passed]="operatorFilterPassed()" [class.blocked]="!operatorFilterPassed()">
+              <span class="node-title">Filter Result</span>
+              <span class="node-val">{{ operatorFilterPassed() ? 'EMITTED ✅' : 'DROPPED 🚫' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  }
+
+  <!-- ======================================================== -->
+  <!-- LESSON 3: CUSTOM OBSERVABLE (new Observable())           -->
+  <!-- ======================================================== -->
+  @if (activeTab() === 'all' || activeTab() === 'custom') {
+    <section class="lesson-card">
+      <div class="card-header">
+        <span class="lesson-badge">Lesson 4</span>
+        <h2>Creating Custom Observables (<code>new Observable()</code>)</h2>
+      </div>
+      <p class="card-desc">
+        Under the hood, any data producer can be wrapped in <code>new Observable(subscriber => &#123; ... &#125;)</code>. You control when to emit <code>next()</code>, signal errors with <code>error()</code>, or close with <code>complete()</code>.
+      </p>
+
+      <div class="custom-stream-box">
+        <div class="status-ribbon">
+          <span class="status-indicator" [class]="customStreamStatus().toLowerCase()"></span>
+          <span class="status-text">Status: <strong>{{ customStreamStatus() }}</strong></span>
+        </div>
+
+        <div class="stream-feed">
+          <span class="feed-label">Latest Subscriber Emission:</span>
+          <div class="feed-message">{{ customStreamValue() }}</div>
+        </div>
+
+        <div class="button-group flex-wrap">
+          <button
+            class="action-btn success"
+            (click)="startCustomObservable(false)"
+            [disabled]="customStreamStatus() === 'RUNNING'"
+          >
+            ▶️ Start Producer Stream
+          </button>
+          <button
+            class="action-btn warning"
+            (click)="startCustomObservable(true)"
+            [disabled]="customStreamStatus() === 'RUNNING'"
+          >
+            ⚠️ Trigger Error Stream
+          </button>
+          <button
+            class="action-btn danger"
+            (click)="stopCustomObservable()"
+            [disabled]="customStreamStatus() !== 'RUNNING'"
+          >
+            ⏹️ Unsubscribe & Teardown
+          </button>
+        </div>
+
+        <div class="code-explain">
+          <p>
+            💡 <strong>Teardown guarantee:</strong> When you unsubscribe or the observable completes/errors, the return cleanup function executes, clearing the internal interval timer.
+          </p>
+        </div>
+      </div>
+    </section>
+  }
+
+  <!-- ======================================================== -->
+  <!-- LESSON 4: SIGNALS VS RXJS INTEROP                        -->
+  <!-- ======================================================== -->
+  @if (activeTab() === 'all' || activeTab() === 'interop') {
+    <section class="lesson-card">
+      <div class="card-header">
+        <span class="lesson-badge">Lesson 5 & 6</span>
+        <h2>Angular Signals ⇄ RxJS Observables Interoperability</h2>
+      </div>
+      <p class="card-desc">
+        Angular 18 seamlessly bridges Signals and RxJS through <code>&#64;angular/core/rxjs-interop</code>. Use Signals for synchronous state in templates, and Observables when you need complex async event pipelines.
+      </p>
+
+      <div class="split-columns">
+        <div class="sub-panel">
+          <div class="panel-tag info"><code>toObservable(signal)</code></div>
+          <h3>Converting Signals to Observables</h3>
+          <p class="panel-sub">
+            Converts a reactive Signal into an Observable that emits every time the signal changes its value.
+          </p>
+          <ul class="feature-list">
+            <li>Enables RxJS operators (<code>debounce</code>, <code>switchMap</code>, <code>distinctUntilChanged</code>) on signal changes.</li>
+            <li>Runs inside Angular's effect phase.</li>
+            <li>Requires injection context or explicit <code>Injector</code>.</li>
+          </ul>
+          <div class="demo-box">
+            <span>Signal: <code>clickCount()</code> = <strong>{{ clickCount() }}</strong></span>
+            <span>➔ <code>toObservable</code> ➔ Mapped x2: <strong>{{ clickCountDoubled() }}</strong></span>
+          </div>
+        </div>
+
+        <div class="sub-panel">
+          <div class="panel-tag purple"><code>toSignal(observable$)</code></div>
+          <h3>Converting Observables to Signals</h3>
+          <p class="panel-sub">
+            Subscribes to an Observable and exposes the emitted values as a readable Signal in the template.
+          </p>
+          <ul class="feature-list">
+            <li>Automatically manages subscription and unsubscription on injection context destroy.</li>
+            <li>Can take an <code>initialValue</code> to avoid <code>undefined</code>.</li>
+            <li>Eliminates boilerplate <code>| async</code> pipes and manual <code>onDestroy</code>.</li>
+          </ul>
+          <div class="demo-box">
+            <span>Observable: <code>interval(1000)</code></span>
+            <span>➔ <code>toSignal</code> ➔ Current Tick: <strong>{{ intervalSignal() }}</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparison Matrix -->
+      <div class="comparison-table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Angular Signals 🚦</th>
+              <th>RxJS Observables 🌊</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Primary Purpose</strong></td>
+              <td>Synchronous UI state & fine-grained reactivity</td>
+              <td>Asynchronous streams of values over time</td>
+            </tr>
+            <tr>
+              <td><strong>Current Value</strong></td>
+              <td>Always has a current value (pull-based)</td>
+              <td>Values emitted over time; may not have immediate value</td>
+            </tr>
+            <tr>
+              <td><strong>Operators</strong></td>
+              <td><code>computed()</code>, <code>effect()</code></td>
+              <td>100+ operators (<code>map</code>, <code>filter</code>, <code>debounce</code>, <code>switchMap</code>)</td>
+            </tr>
+            <tr>
+              <td><strong>Subscription Cleanup</strong></td>
+              <td>Automatic (Dependency graph tracking)</td>
+              <td>Requires manual cleanup or <code>toSignal()</code> / <code>takeUntilDestroyed()</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  }
+
+  <!-- ======================================================== -->
+  <!-- LESSON 5: SUBJECT & BEHAVIORSUBJECT                     -->
+  <!-- ======================================================== -->
+  @if (activeTab() === 'all' || activeTab() === 'subjects') {
+    <section class="lesson-card">
+      <div class="card-header">
+        <span class="lesson-badge">Lesson 7</span>
+        <h2>Subject vs. BehaviorSubject (Multicasting)</h2>
+      </div>
+      <p class="card-desc">
+        Subjects act as both an Observable (you can subscribe to them) and an Observer (you can call <code>.next()</code> on them imperatively).
+      </p>
+
+      <div class="split-columns">
+        <!-- BehaviorSubject Demo -->
+        <div class="sub-panel">
+          <div class="panel-tag success">BehaviorSubject (Has Initial State)</div>
+          <h3>State Holder: <code>BehaviorSubject</code></h3>
+          <p class="panel-sub">
+            Always stores the latest emitted value and immediately replays it to new subscribers.
+          </p>
+
+          <div class="display-meter">
+            <span class="meter-label">Active State:</span>
+            <span class="meter-value accent-text">{{ currentStatus() }}</span>
+          </div>
+
+          <div class="button-group flex-wrap">
+            <button class="action-btn small" (click)="updateStatus('🟢 Online - Ready')">
+              🟢 Ready
+            </button>
+            <button class="action-btn small" (click)="updateStatus('🟡 Processing Stream...')">
+              🟡 Processing
+            </button>
+            <button class="action-btn small" (click)="updateStatus('🔴 Busy / Locked')">
+              🔴 Locked
+            </button>
+          </div>
+        </div>
+
+        <!-- Subject Demo -->
+        <div class="sub-panel">
+          <div class="panel-tag warning">Subject (Event Bus)</div>
+          <h3>Event Bus: <code>Subject</code></h3>
+          <p class="panel-sub">
+            Does not hold state. Only emits to subscribers currently listening at the exact moment of emission.
+          </p>
+
+          <div class="display-meter">
+            <span class="meter-label">Last Broadcast:</span>
+            <span class="meter-value">{{ lastBroadcastMessage() }}</span>
+          </div>
+
+          <div class="button-group flex-wrap">
+            <button class="action-btn small" (click)="sendBroadcast('⚡ Ping Event triggered at ' + clickCount())">
+              ⚡ Dispatch Ping
+            </button>
+            <button class="action-btn small" (click)="sendBroadcast('🚀 Mission Launch Packet #' + (clickCount() + 1))">
+              🚀 Dispatch Packet
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  }
+
+  <!-- ======================================================== -->
+  <!-- REAL-TIME REACTIVE STREAM CONSOLE                        -->
+  <!-- ======================================================== -->
+  <section class="lesson-card stream-console-card">
+    <div class="card-header flex-between">
+      <div>
+        <span class="lesson-badge console-badge">Live Stream Visualizer</span>
+        <h2>Reactive Stream Activity Log</h2>
+      </div>
+      <div class="console-actions">
+        <span class="badge-mini">{{ streamLogs().length }} events</span>
+        <button class="ghost-btn-small" (click)="clearLogs()" [disabled]="streamLogs().length === 0">
+          🧹 Clear Log
+        </button>
+      </div>
+    </div>
+    <p class="card-desc">
+      Live stream emissions captured in real time from all active Observables, Subjects, and Signal interop streams.
+    </p>
+
+    <div class="stream-terminal">
+      @if (streamLogs().length === 0) {
+        <div class="empty-terminal">
+          <span>📡 Terminal listening... Trigger buttons above or type in inputs to view stream packets.</span>
+        </div>
+      } @else {
+        <div class="log-stream-list">
+          @for (log of streamLogs(); track log.id) {
+            <div class="log-entry" [class]="'type-' + log.type">
+              <span class="log-time">{{ log.time }}</span>
+              <span class="log-badge" [class]="log.type">[{{ log.type | uppercase }}]</span>
+              <span class="log-source">{{ log.source }}</span>
+              <span class="log-arrow">➔</span>
+              <span class="log-msg">{{ log.value }}</span>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </section>
+</main>

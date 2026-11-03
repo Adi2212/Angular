@@ -187,6 +187,38 @@ Angular/
 │       ├── angular.json
 │       ├── package.json
 │       └── README.md
+├── day-6/
+│   ├── p1/                    # Day 6 - Project 1: RxJS Deep Dive (Observables, Operators, Subjects & Signals Interop)
+│   │   ├── public/
+│   │   │   └── rxjs-logo.png          # RxJS flame brand asset
+│   │   ├── src/
+│   │   │   ├── app/
+│   │   │   │   ├── app.component.ts   # Interactive stream labs, operators, custom observables & interop
+│   │   │   │   ├── app.component.html # Dashboard tabs, visual meters & stream activity visualizer
+│   │   │   │   └── app.component.css  # Dark purple theme & terminal logs
+│   │   │   ├── main.ts
+│   │   │   └── styles.css
+│   │   ├── angular.json
+│   │   ├── package.json
+│   │   └── README.md
+│   └── p2/                    # Day 6 - Project 2: PlacePicker (HTTP Client & Express Backend)
+│       ├── backend/           # Node.js Express REST API server
+│       │   ├── data/          # places.json & user-places.json
+│       │   ├── images/        # 18 global destination photos
+│       │   └── app.js         # REST endpoints (GET, PUT, DELETE) & CORS
+│       ├── public/
+│       │   └── logo.png       # PlacePicker brand logo
+│       ├── src/
+│       │   ├── app/
+│       │   │   ├── places/    # available-places, user-places, places-container, PlacesService
+│       │   │   ├── app.component.ts
+│       │   │   ├── app.component.html
+│       │   │   └── app.component.css
+│       │   ├── main.ts        # provideHttpClient()
+│       │   └── styles.css
+│       ├── angular.json
+│       ├── package.json
+│       └── README.md
 ├── .gitignore
 └── README.md
 ```
@@ -206,6 +238,8 @@ Angular/
 | [`day-4/p2/`](./day-4/p2) | **Pipes Showcase** | `DatePipe`, `CurrencyPipe`, `JsonPipe`, Pure vs Impure Change Detection Lab, `AsyncPipe` | **4300** |
 | [`day-5/p1/`](./day-5/p1) | **Services Deep Dive** | Dependency Injection, `inject()`, Signal Encapsulation (`asReadonly`), Custom `InjectionToken` | **4200** |
 | [`day-5/p2/`](./day-5/p2) | **Change Detection Deep Dive** | Zone.js Dirty Checking, `ChangeDetectionStrategy.OnPush`, Signal Reactivity, Zone Pollution Avoidance | **4200** |
+| [`day-6/p1/`](./day-6/p1) | **RxJS & Observables Deep Dive** | Observables, `interval`, `DestroyRef`, `pipe()`, `map()`, `filter()`, `debounceTime()`, `new Observable()`, `toSignal()`, `toObservable()`, `BehaviorSubject` | **4200** |
+| [`day-6/p2/`](./day-6/p2) | **PlacePicker (HTTP & Backend)** | `HttpClient`, `provideHttpClient()`, Signals (`isLoading`, `error`), Async Fetching, Express REST API | **4200 (App) / 3000 (API)** |
 
 ---
 
@@ -430,6 +464,69 @@ Navigate to: [http://localhost:4200/](http://localhost:4200/)
 
 ---
 
+### Day 6 - Project 1 (`day-6/p1`): RxJS & Observables Deep Dive
+An extensive reactive programming laboratory exploring stream architectures, subscription lifecycle cleanup, RxJS operators, custom producers, and Angular 18 Signals interoperability:
+- **Observables & Streams of Data**:
+  - Emitting continuous streams with `interval(1000)`.
+  - Manual subscription management and memory leak prevention with `DestroyRef.onDestroy(() => subscription.unsubscribe())`.
+- **Modern Signals ⇄ RxJS Interoperability (`@angular/core/rxjs-interop`)**:
+  - `toObservable(signal)`: Converting synchronous Signals (`clickCount`) into Observables to apply stream operators (`map`, `filter`).
+  - `toSignal(observable$, { initialValue })`: Bridging continuous Observables (`interval$`) into readable Signals in templates with automatic lifecycle teardown.
+- **Pipeable Operators Laboratory**:
+  - `map()` & `filter()`: Real-time mathematical stream transformation and gating pipeline.
+  - `debounceTime(400)` & `distinctUntilChanged()`: Asynchronous typeahead search input stream.
+  - `tap()`: Diagnostic stream inspection without mutation.
+- **Custom Observables (`new Observable()`)**:
+  - Custom async data producer with explicit `next()`, `complete()`, `error()`, and teardown function execution.
+- **Multicasting with Subjects**:
+  - `BehaviorSubject`: Instant state replay to new subscribers.
+  - `Subject`: Multicast push event broadcasting.
+- **Real-Time Stream Activity Visualizer**:
+  - Integrated visual stream terminal tracking every `[NEXT]`, `[COMPLETE]`, `[ERROR]`, `[TEARDOWN]`, and `[INFO]` emission in real time.
+
+#### Running Day 6 - Project 1:
+```bash
+cd day-6/p1
+npm start
+```
+Navigate to: [http://localhost:4200/](http://localhost:4200/)
+
+---
+
+### Day 6 - Project 2 (`day-6/p2`): PlacePicker (Centralized HTTP Service & Backend Integration)
+A full-stack Angular application demonstrating asynchronous HTTP client communication, centralized gateway service architecture, optimistic updates, loading states, and Express REST API integration:
+- **Centralized `HttpService` Gateway (`shared/http.service.ts`)**:
+  - Strongly-typed CRUD wrappers (`get`, `post`, `put`, `delete`, `patch`).
+  - Active request tracking signal (`isLoading`) driving a global top-level animated progress bar.
+  - Automatic error normalization, logging, and dispatching to `ErrorService`.
+  - Endpoint path resolution (`/places` -> `http://localhost:3000/places`).
+- **Domain Service Refactoring (`PlacesService`)**:
+  - Injects `HttpService` instead of raw `HttpClient`.
+  - Implements optimistic UI updates with automatic state rollback on server failures.
+- **Reactive UI States with Signals**:
+  - `isLoading`: Signal indicating active HTTP requests, toggling loading feedback.
+  - `error`: Signal capturing HTTP network or server errors.
+  - `places`: Signal storing fetched destination cards (`Place[]`).
+- **Subscription Lifecycle & Memory Safety**:
+  - Manages HTTP subscriptions with `DestroyRef.onDestroy(() => subscription.unsubscribe())`.
+- **Node.js & Express REST Backend**:
+  - Serves static destination images and JSON endpoints (`/places`, `/user-places`).
+  - Robust error handling, path resolution, and CORS preflight (`OPTIONS`) support.
+
+#### Running Day 6 - Project 2:
+```bash
+# Terminal 1: Start the Backend API (Port 3000)
+cd day-6/p2/backend
+npm start
+
+# Terminal 2: Start the Frontend App (Port 4200)
+cd day-6/p2
+npm start
+```
+Navigate to: [http://localhost:4200/](http://localhost:4200/)
+
+---
+
 ## 🛠️ Build Projects
 
 ```bash
@@ -459,4 +556,10 @@ cd ../day-5/p1 && npm run build -- --configuration development
 
 # Day 5 / p2 (Change Detection)
 cd ../day-5/p2 && npm run build -- --configuration development
+
+# Day 6 / p1 (RxJS & Observables)
+cd ../day-6/p1 && npm run build -- --configuration development
+
+# Day 6 / p2 (PlacePicker HTTP)
+cd ../day-6/p2 && npm run build -- --configuration development
 ```

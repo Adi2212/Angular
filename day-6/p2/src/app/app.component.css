@@ -1,0 +1,77 @@
+/* Global Network Progress Bar */
+.global-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #8feeff, #ff9800, #e74c3c, #8feeff);
+  background-size: 250% 100%;
+  animation: loading-strip 1.4s infinite linear;
+  z-index: 9999;
+  box-shadow: 0 0 10px rgba(143, 238, 255, 0.7);
+}
+
+@keyframes loading-strip {
+  0% {
+    background-position: 250% 0;
+  }
+  100% {
+    background-position: -250% 0;
+  }
+}
+
+/* Global Error Modal */
+.error-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.error-modal {
+  background: #1f1c2c;
+  color: #defaf8;
+  border: 2px solid #e74c3c;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 32rem;
+  width: 90%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.error-modal h2 {
+  font-family: "Raleway", sans-serif;
+  color: #ff6b6b;
+  margin-top: 0;
+  font-size: 1.5rem;
+}
+
+.error-modal p {
+  color: #c5d2d1;
+  font-size: 1.05rem;
+  margin: 1.25rem 0 1.75rem;
+  line-height: 1.5;
+}
+
+.error-modal button {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.6rem 1.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.error-modal button:hover {
+  background: #c0392b;
+  transform: scale(1.02);
+}

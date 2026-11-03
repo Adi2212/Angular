@@ -1,0 +1,13 @@
+<app-places-container title="Your Favorite Places">
+  @if (isLoading() && !error()) {
+    <p class="fallback-text">Loading your places...</p>
+  }
+  @if (error()) {
+    <p class="fallback-text">{{ error() }}</p>
+  }
+  @if (places().length > 0) {
+    <app-places [places]="places()" (selectPlace)="onRemovePlace($event)" />
+  } @else if (!isLoading() && places().length === 0) {
+    <p class="fallback-text">Select some places you would like to visit or have visited.</p>
+  }
+</app-places-container>

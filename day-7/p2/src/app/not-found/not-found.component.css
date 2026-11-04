@@ -1,0 +1,41 @@
+.not-found-container {
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  background-color: #3a2c54;
+  border-radius: 8px;
+  color: #c3b3d8;
+}
+
+h2 {
+  font-size: 3.5rem;
+  margin: 0;
+  color: #9965dd;
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin: 0.5rem 0 1rem 0;
+  color: #e5daf0;
+}
+
+p {
+  font-size: 0.95rem;
+  max-width: 25rem;
+  margin: 0 auto 1.5rem auto;
+  line-height: 1.5;
+}
+
+.home-btn {
+  display: inline-block;
+  padding: 0.5rem 1.25rem;
+  background-color: #9965dd;
+  color: #181223;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.home-btn:hover {
+  background-color: #b084e8;
+}

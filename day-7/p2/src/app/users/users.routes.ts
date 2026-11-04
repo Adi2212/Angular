@@ -1,0 +1,30 @@
+import { Routes } from '@angular/router';
+
+import { TasksComponent } from '../tasks/tasks.component';
+import {
+  NewTaskComponent,
+  canLeaveEditPage,
+} from '../tasks/new-task/new-task.component';
+import { NotFoundComponent } from '../not-found/not-found.component';
+
+export const userRoutes: Routes = [
+  {
+    path: '',
+    redirectTo: 'tasks',
+    pathMatch: 'prefix',
+  },
+  {
+    path: 'tasks',
+    component: TasksComponent,
+  },
+  {
+    path: 'tasks/new',
+    component: NewTaskComponent,
+    canDeactivate: [canLeaveEditPage],
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
+    title: '404 - Page Not Found',
+  },
+];

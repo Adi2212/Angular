@@ -219,6 +219,46 @@ Angular/
 │       ├── angular.json
 │       ├── package.json
 │       └── README.md
+├── day-7/
+│   ├── p1/                    # Day 7 - Project 1: Angular Forms (Template-Driven & Reactive Forms)
+│   │   ├── public/
+│   │   │   ├── favicon.ico
+│   │   │   └── logo.jpg
+│   │   ├── src/
+│   │   │   ├── app/
+│   │   │   │   ├── auth/
+│   │   │   │   │   ├── login/         # Template-Driven Form (ngModel, ngForm, template validation)
+│   │   │   │   │   └── signup/        # Reactive Form (FormGroup, FormControl, cross-field validators, select, radio, checkbox)
+│   │   │   │   ├── app.component.ts   # Form paradigm switcher (Signals)
+│   │   │   │   ├── app.component.html
+│   │   │   │   └── app.component.css
+│   │   │   ├── index.html
+│   │   │   ├── main.ts
+│   │   │   └── styles.css
+│   │   ├── angular.json
+│   │   ├── package.json
+│   │   └── README.md
+│   └── p2/                    # Day 7 - Project 2: Routing Deep Dive (EasyTask Multi-View)
+│       ├── public/
+│       │   ├── users/                 # Team member profile images
+│       │   └── task-management-logo.png
+│       ├── src/
+│       │   ├── app/
+│       │   │   ├── header/            # Navigation header with Home routerLink
+│       │   │   ├── users/             # Team sidebar, UserComponent (routerLinkActive), UserTasksComponent
+│       │   │   ├── tasks/             # TasksComponent (query params), NewTaskComponent (canDeactivate modal), NoTaskComponent
+│       │   │   ├── not-found/         # 404 Wildcard fallback component
+│       │   │   ├── app.routes.ts      # Top-level routes, resolvers, and title
+│       │   │   ├── app.config.ts      # provideRouter, withComponentInputBinding, paramsInheritanceStrategy
+│       │   │   ├── app.component.ts   # Main layout with <router-outlet />
+│       │   │   └── app.component.html
+│       │   ├── dummy-users.ts
+│       │   ├── index.html
+│       │   ├── main.ts
+│       │   └── styles.css
+│       ├── angular.json
+│       ├── package.json
+│       └── README.md
 ├── .gitignore
 └── README.md
 ```
@@ -240,6 +280,8 @@ Angular/
 | [`day-5/p2/`](./day-5/p2) | **Change Detection Deep Dive** | Zone.js Dirty Checking, `ChangeDetectionStrategy.OnPush`, Signal Reactivity, Zone Pollution Avoidance | **4200** |
 | [`day-6/p1/`](./day-6/p1) | **RxJS & Observables Deep Dive** | Observables, `interval`, `DestroyRef`, `pipe()`, `map()`, `filter()`, `debounceTime()`, `new Observable()`, `toSignal()`, `toObservable()`, `BehaviorSubject` | **4200** |
 | [`day-6/p2/`](./day-6/p2) | **PlacePicker (HTTP & Backend)** | `HttpClient`, `provideHttpClient()`, Signals (`isLoading`, `error`), Async Fetching, Express REST API | **4200 (App) / 3000 (API)** |
+| [`day-7/p1/`](./day-7/p1) | **Angular Forms Deep Dive** | Template-Driven (`ngModel`, `ngForm`), Reactive (`FormGroup`, `FormControl`), Select List, Radio Groups, Checkboxes, Cross-Field Validation | **4200** |
+| [`day-7/p2/`](./day-7/p2) | **Routing Deep Dive** | Angular Router, `withComponentInputBinding()`, Nested Child Routes, Resolvers, Dynamic Titles, `CanDeactivateFn`, Query Params, 404 Fallback | **4200** |
 
 ---
 
@@ -527,6 +569,70 @@ Navigate to: [http://localhost:4200/](http://localhost:4200/)
 
 ---
 
+### Day 7 - Project 1: Angular Forms Deep Dive
+A comprehensive Angular 18 forms showcase contrasting Template-Driven and Reactive Form paradigms:
+- **Interactive Paradigm Switcher (`AppComponent`)**:
+  - Signal-driven tab navigator (`activeForm = signal<'login' | 'signup'>('login')`) dynamically toggles views.
+- **Template-Driven Login Form (`LoginComponent`)**:
+  - Leverages `FormsModule`, `#form="ngForm"`, and `ngModel` with two-way and template tracking.
+  - Built-in validation (`required`, `email`, `minlength="6"`).
+  - Validation feedback with `.control-error` responding to dirty/touched states.
+  - "Remember session" checkbox and form reset via `form.resetForm()`.
+- **Reactive Signup Form (`SignupComponent`)**:
+  - Strongly-typed `FormGroup` architecture using `ReactiveFormsModule`.
+  - Diverse input controls:
+    - **Text inputs**: First name, last name, street, number, postal code (pattern validation `/^[0-9]{4,6}$/`), city.
+    - **Email & Passwords**: Passwords nested group with custom `passwordsMatchValidator` ensuring matching passwords.
+    - **Select list**: Role dropdown (Student, Teacher, Employee, Founder, Other).
+    - **Radio button groups**: Account Type (`personal`, `business`, `academic`) and Billing Cycle (`monthly`, `annually`).
+    - **Multi-select checkboxes**: Referral acquisition channels (Google, Friend, LinkedIn, Other).
+    - **Required checkbox**: Terms and conditions acceptance (`Validators.requiredTrue`).
+  - Error highlighting with helper getters, `markAllAsTouched()`, and real-time validation states.
+  - Form reset and interactive submission feedback card rendering parsed reactive data.
+
+#### Running Day 7 - Project 1:
+```bash
+cd day-7/p1
+npm start
+```
+Navigate to: [http://localhost:4200/](http://localhost:4200/)
+
+---
+
+### Day 7 - Project 2: Angular Routing Deep Dive
+A comprehensive Angular 18 routing application refactoring EasyTask into a full-featured multi-view layout:
+- **Modern Standalone Router Configuration (`app.config.ts`)**:
+  - `provideRouter(routes, withComponentInputBinding(), withRouterConfig({ paramsInheritanceStrategy: 'always' }))`.
+  - Seamlessly injects route params (`:userId`), query params (`?order=desc`), and resolver data into `input()` signals.
+- **Nested / Child Routes Hierarchy (`users.routes.ts`)**:
+  - `users/:userId` parent route mounts `UserTasksComponent`.
+  - Child routes render inside `<router-outlet />`:
+    - `tasks`: Mounts `TasksComponent` displaying active member tasks.
+    - `tasks/new`: Mounts `NewTaskComponent` dialog.
+- **Route Resolvers & Dynamic Tab Titles**:
+  - `resolveUserName`: Resolves user display name from `UsersService`.
+  - `resolveTitle`: Dynamically updates `document.title` to `<User Name>'s Tasks`.
+- **Navigation & Active Link Highlighting**:
+  - `UserComponent` uses `[routerLink]="['/users', user().id]"` and `routerLinkActive="selected"`.
+  - Header logo and title provide convenient one-click navigation back to Home (`/`).
+- **Query Parameters & Reactive Sorting (`TasksComponent`)**:
+  - Binds query param `order = input<'asc' | 'desc'>('asc')`.
+  - Dynamic toggle link re-orders tasks reactively via `computed()` signals.
+- **Modal Dialog & `canDeactivate` Guard (`NewTaskComponent`)**:
+  - Backdrop and modal dialog overlay rendered upon routing to `tasks/new`.
+  - `canLeaveEditPage` guard prompts confirmation before abandoning unsaved task input.
+- **Wildcard Route & 404 Fallback (`NotFoundComponent`)**:
+  - Gracefully captures unmapped paths and invalid routes.
+
+#### Running Day 7 - Project 2:
+```bash
+cd day-7/p2
+npm start
+```
+Navigate to: [http://localhost:4200/](http://localhost:4200/)
+
+---
+
 ## 🛠️ Build Projects
 
 ```bash
@@ -562,4 +668,10 @@ cd ../day-6/p1 && npm run build -- --configuration development
 
 # Day 6 / p2 (PlacePicker HTTP)
 cd ../day-6/p2 && npm run build -- --configuration development
+
+# Day 7 / p1 (Angular Forms)
+cd ../day-7/p1 && npm run build -- --configuration development
+
+# Day 7 / p2 (Angular Routing)
+cd ../day-7/p2 && npm run build -- --configuration development
 ```

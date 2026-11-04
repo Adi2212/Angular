@@ -1,0 +1,338 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+  <span class="badge">Reactive Form</span>
+  <h2>Welcome on board!</h2>
+  <p class="form-desc">Demonstrating FormGroup, FormControl, custom cross-field validators, selects, and radio groups.</p>
+
+  <!-- Email -->
+  <div class="control">
+    <label for="email">Email Address</label>
+    <input
+      id="email"
+      type="email"
+      formControlName="email"
+      placeholder="you@example.com"
+    />
+    @if (emailControl.touched && emailControl.invalid) {
+      <div class="control-error">
+        @if (emailControl.errors?.['required']) {
+          <p>Email address is required.</p>
+        } @else if (emailControl.errors?.['email']) {
+          <p>Please enter a valid email format.</p>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Passwords Group with Cross-field validation -->
+  <div class="control-row" formGroupName="passwords">
+    <div class="control">
+      <label for="password">Password</label>
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        placeholder="Min 6 characters"
+      />
+      @if (passwordControl.touched && passwordControl.invalid) {
+        <div class="control-error">
+          @if (passwordControl.errors?.['required']) {
+            <p>Password is required.</p>
+          } @else if (passwordControl.errors?.['minlength']) {
+            <p>Password must be at least 6 characters long.</p>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="control">
+      <label for="confirm-password">Confirm Password</label>
+      <input
+        id="confirm-password"
+        type="password"
+        formControlName="confirmPassword"
+        placeholder="Re-enter password"
+      />
+      @if (confirmPasswordControl.touched && confirmPasswordControl.invalid) {
+        <div class="control-error">
+          @if (confirmPasswordControl.errors?.['required']) {
+            <p>Please confirm your password.</p>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  @if (passwordsGroup.touched && passwordsGroup.hasError('passwordMismatch')) {
+    <div class="control-error cross-field-error">
+      <p>Passwords do not match. Please verify both fields.</p>
+    </div>
+  }
+
+  <hr />
+
+  <!-- Personal Information -->
+  <div class="control-row">
+    <div class="control">
+      <label for="first-name">First Name</label>
+      <input
+        type="text"
+        id="first-name"
+        formControlName="firstName"
+        placeholder="Jane"
+      />
+      @if (firstNameControl.touched && firstNameControl.invalid) {
+        <div class="control-error">
+          <p>First name is required.</p>
+        </div>
+      }
+    </div>
+
+    <div class="control">
+      <label for="last-name">Last Name</label>
+      <input
+        type="text"
+        id="last-name"
+        formControlName="lastName"
+        placeholder="Doe"
+      />
+      @if (lastNameControl.touched && lastNameControl.invalid) {
+        <div class="control-error">
+          <p>Last name is required.</p>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Address Nested FormGroup -->
+  <fieldset formGroupName="address">
+    <legend>Your Address</legend>
+
+    <div class="control-row">
+      <div class="control">
+        <label for="street">Street</label>
+        <input type="text" id="street" formControlName="street" placeholder="Main Street" />
+        @if (streetControl.touched && streetControl.invalid) {
+          <div class="control-error">
+            <p>Street is required.</p>
+          </div>
+        }
+      </div>
+
+      <div class="control">
+        <label for="number">Number</label>
+        <input type="text" id="number" formControlName="number" placeholder="42B" />
+        @if (numberControl.touched && numberControl.invalid) {
+          <div class="control-error">
+            <p>Number is required.</p>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="control-row">
+      <div class="control">
+        <label for="postal-code">Postal Code</label>
+        <input type="text" id="postal-code" formControlName="postalCode" placeholder="10001" />
+        @if (postalCodeControl.touched && postalCodeControl.invalid) {
+          <div class="control-error">
+            @if (postalCodeControl.errors?.['required']) {
+              <p>Postal code is required.</p>
+            } @else if (postalCodeControl.errors?.['pattern']) {
+              <p>Please enter a valid 4-6 digit postal code.</p>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="control">
+        <label for="city">City</label>
+        <input type="text" id="city" formControlName="city" placeholder="New York" />
+        @if (cityControl.touched && cityControl.invalid) {
+          <div class="control-error">
+            <p>City is required.</p>
+          </div>
+        }
+      </div>
+    </div>
+  </fieldset>
+
+  <hr />
+
+  <!-- Select List (Role Dropdown) -->
+  <div class="control-row">
+    <div class="control">
+      <label for="role">What best describes your role? (Select List)</label>
+      <select id="role" formControlName="role">
+        <option value="student">🎓 Student</option>
+        <option value="teacher">👨‍🏫 Teacher / Instructor</option>
+        <option value="employee">💼 Software Engineer / Employee</option>
+        <option value="founder">🚀 Founder / Entrepreneur</option>
+        <option value="other">🌐 Other</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Radio Group 1: Account Type -->
+  <fieldset>
+    <legend>Account Type (Radio Group)</legend>
+    <div class="control-row radio-group">
+      <div class="control">
+        <label for="acc-personal">
+          <input
+            type="radio"
+            id="acc-personal"
+            value="personal"
+            formControlName="accountType"
+          />
+          Personal
+        </label>
+      </div>
+
+      <div class="control">
+        <label for="acc-business">
+          <input
+            type="radio"
+            id="acc-business"
+            value="business"
+            formControlName="accountType"
+          />
+          Business
+        </label>
+      </div>
+
+      <div class="control">
+        <label for="acc-academic">
+          <input
+            type="radio"
+            id="acc-academic"
+            value="academic"
+            formControlName="accountType"
+          />
+          Academic
+        </label>
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- Radio Group 2: Billing Cycle -->
+  <fieldset>
+    <legend>Billing Cycle (Radio Group)</legend>
+    <div class="control-row radio-group">
+      <div class="control">
+        <label for="bill-monthly">
+          <input
+            type="radio"
+            id="bill-monthly"
+            value="monthly"
+            formControlName="billingCycle"
+          />
+          Billed Monthly ($15/mo)
+        </label>
+      </div>
+
+      <div class="control">
+        <label for="bill-annually">
+          <input
+            type="radio"
+            id="bill-annually"
+            value="annually"
+            formControlName="billingCycle"
+          />
+          Billed Annually ($144/yr - Save 20%)
+        </label>
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- Multi-select Checkbox Group: Acquisition channel -->
+  <fieldset formGroupName="source">
+    <legend>How did you find us? (Checkboxes)</legend>
+    <div class="control-row">
+      <div class="control">
+        <label for="source-google">
+          <input
+            type="checkbox"
+            id="source-google"
+            formControlName="google"
+          />
+          Google Search
+        </label>
+      </div>
+
+      <div class="control">
+        <label for="source-friend">
+          <input
+            type="checkbox"
+            id="source-friend"
+            formControlName="friend"
+          />
+          Referred by Friend
+        </label>
+      </div>
+
+      <div class="control">
+        <label for="source-linkedin">
+          <input
+            type="checkbox"
+            id="source-linkedin"
+            formControlName="linkedin"
+          />
+          LinkedIn
+        </label>
+      </div>
+
+      <div class="control">
+        <label for="source-other">
+          <input
+            type="checkbox"
+            id="source-other"
+            formControlName="other"
+          />
+          Other
+        </label>
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- Single Required Checkbox: Terms -->
+  <div class="control">
+    <label for="terms-and-conditions">
+      <input
+        type="checkbox"
+        id="terms-and-conditions"
+        formControlName="terms"
+      />
+      I agree to the Terms of Service & Privacy Policy
+    </label>
+    @if (termsControl.touched && termsControl.invalid) {
+      <div class="control-error">
+        <p>You must accept the terms and conditions to proceed.</p>
+      </div>
+    }
+  </div>
+
+  <p class="form-actions">
+    <button type="button" class="button button-flat" (click)="onReset()">Reset Form</button>
+    <button type="submit" class="button">Sign Up</button>
+  </p>
+
+  <!-- Submission Feedback Card -->
+  @if (submittedData(); as data) {
+    <div class="success-banner">
+      <h4>Registration Successful (Reactive Form)!</h4>
+      <p><strong>Name:</strong> {{ data.firstName }} {{ data.lastName }}</p>
+      <p><strong>Email:</strong> {{ data.email }}</p>
+      <p><strong>Address:</strong> {{ data.address.number }} {{ data.address.street }}, {{ data.address.city }} ({{ data.address.postalCode }})</p>
+      <p><strong>Role (Select):</strong> {{ data.role }}</p>
+      <p><strong>Account Type (Radio):</strong> {{ data.accountType }}</p>
+      <p><strong>Billing (Radio):</strong> {{ data.billingCycle }}</p>
+      <p><strong>Referral Channels:</strong> 
+        @if (data.source.google) { <span class="tag">Google</span> }
+        @if (data.source.friend) { <span class="tag">Friend</span> }
+        @if (data.source.linkedin) { <span class="tag">LinkedIn</span> }
+        @if (data.source.other) { <span class="tag">Other</span> }
+        @if (!data.source.google && !data.source.friend && !data.source.linkedin && !data.source.other) { <em>None selected</em> }
+      </p>
+    </div>
+  }
+</form>

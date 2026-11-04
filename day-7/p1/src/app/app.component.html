@@ -1,0 +1,32 @@
+<header>
+  <img src="logo.jpg" alt="A form and a pencil" />
+  <h1>Angular Forms</h1>
+  <p class="subtitle">Exploring Template-Driven &amp; Reactive Form Architectures</p>
+
+  <nav class="nav-tabs" aria-label="Forms Paradigm Navigation">
+    <button
+      type="button"
+      class="nav-tab"
+      [class.active]="activeForm() === 'login'"
+      (click)="selectForm('login')"
+    >
+      Login (Template-Driven)
+    </button>
+    <button
+      type="button"
+      class="nav-tab"
+      [class.active]="activeForm() === 'signup'"
+      (click)="selectForm('signup')"
+    >
+      Sign Up (Reactive Form)
+    </button>
+  </nav>
+</header>
+
+<main>
+  @if (activeForm() === 'login') {
+    <app-login />
+  } @else {
+    <app-signup />
+  }
+</main>

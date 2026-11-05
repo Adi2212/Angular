@@ -259,6 +259,28 @@ Angular/
 │       ├── angular.json
 │       ├── package.json
 │       └── README.md
+├── day-8/
+│   └── p1/                    # Day 8 - Project 1: Advanced Routing, Resolvers & Guards (EasyTask Multi-View)
+│       ├── public/
+│       │   ├── users/                 # Team member profile images
+│       │   └── task-management-logo.png
+│       ├── src/
+│       │   ├── app/
+│       │   │   ├── header/            # Navigation header with Home routerLink
+│       │   │   ├── users/             # Team sidebar, UserComponent, UserTasksComponent (resolveUserName, resolveTitle)
+│       │   │   ├── tasks/             # TasksComponent (resolveUserTasks, runGuardsAndResolvers: 'always'), NewTaskComponent (canLeaveEditPage)
+│       │   │   ├── not-found/         # 404 Wildcard fallback component
+│       │   │   ├── app.routes.ts      # Top-level routes, CanMatchFn with RedirectCommand, static route data
+│       │   │   ├── app.config.ts      # provideRouter, withComponentInputBinding, paramsInheritanceStrategy
+│       │   │   ├── app.component.ts   # Main layout with <router-outlet />
+│       │   │   └── app.component.html
+│       │   ├── dummy-users.ts
+│       │   ├── index.html
+│       │   ├── main.ts
+│       │   └── styles.css
+│       ├── angular.json
+│       ├── package.json
+│       └── README.md
 ├── .gitignore
 └── README.md
 ```
@@ -282,6 +304,7 @@ Angular/
 | [`day-6/p2/`](./day-6/p2) | **PlacePicker (HTTP & Backend)** | `HttpClient`, `provideHttpClient()`, Signals (`isLoading`, `error`), Async Fetching, Express REST API | **4200 (App) / 3000 (API)** |
 | [`day-7/p1/`](./day-7/p1) | **Angular Forms Deep Dive** | Template-Driven (`ngModel`, `ngForm`), Reactive (`FormGroup`, `FormControl`), Select List, Radio Groups, Checkboxes, Cross-Field Validation | **4200** |
 | [`day-7/p2/`](./day-7/p2) | **Routing Deep Dive** | Angular Router, `withComponentInputBinding()`, Nested Child Routes, Resolvers, Dynamic Titles, `CanDeactivateFn`, Query Params, 404 Fallback | **4200** |
+| [`day-8/p1/`](./day-8/p1) | **Lazy Loading & Deferrable Views** | Route Lazy Loading (`loadComponent`, `loadChildren`), Lazy-Loaded Services, `@defer (on viewport; prefetch on idle)`, Triggers, `@placeholder`, `@loading` | **4200** |
 
 ---
 
@@ -633,6 +656,32 @@ Navigate to: [http://localhost:4200/](http://localhost:4200/)
 
 ---
 
+### Day 8 - Project 1: Route-based Lazy Loading & Deferrable Views (`@defer`)
+An advanced Angular 18 optimization project demonstrating code splitting, route-based lazy loading, service code-splitting, and template deferrable views (`@defer`):
+- **Route-based Lazy Loading (`loadComponent` & `loadChildren`)**:
+  - `loadComponent`: Lazily loads `UserTasksComponent` and `NewTaskComponent` dynamically on demand, keeping initial bundle size minimal (main bundle: ~5.4 kB).
+  - `loadChildren`: Lazy loads the entire `users.routes` child route group as an isolated bundle.
+- **Lazy-Loaded Services**:
+  - Because `TasksService` is exclusively referenced within the lazy-loaded user/task routes, Angular's build pipeline automatically extracts `TasksService` into the lazy route chunk instead of the root bundle.
+- **Deferrable Views (`@defer`)**:
+  - Implements `@defer (on viewport; prefetch on idle)` on task item cards (`TaskComponent`), automatically splitting `TaskComponent` into an independent lazy chunk (`task-component`).
+  - Supports full lifecycle states: `@placeholder` (skeleton UI), `@loading` (with delay & minimum duration thresholds to prevent flicker), and `@error`.
+- **Triggers & Prefetching**:
+  - Leverages `on viewport` via native `IntersectionObserver` when scrolling inside the scrollable tasks container.
+  - Combines with `prefetch on idle` to silently download chunks during browser idle time for zero-latency rendering upon viewport entry.
+- **Pre-Fetching Route Resolvers & Guards**:
+  - `resolveUserTasks` & `resolveUserName` resolve data prior to component activation.
+  - `CanMatchFn` with `RedirectCommand` and `CanDeactivateFn` dirty form leave guard.
+
+#### Running Day 8 - Project 1:
+```bash
+cd day-8/p1
+npm start
+```
+Navigate to: [http://localhost:4200/](http://localhost:4200/)
+
+---
+
 ## 🛠️ Build Projects
 
 ```bash
@@ -674,4 +723,7 @@ cd ../day-7/p1 && npm run build -- --configuration development
 
 # Day 7 / p2 (Angular Routing)
 cd ../day-7/p2 && npm run build -- --configuration development
+
+# Day 8 / p1 (Advanced Routing & Resolvers)
+cd ../day-8/p1 && npm run build -- --configuration development
 ```

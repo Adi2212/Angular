@@ -1,0 +1,146 @@
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+  
+  <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+    <div>
+      <h1 class="text-3xl font-extrabold font-display text-slate-900 tracking-tight">
+        {{ isEditMode ? 'Edit Farm Produce' : 'List New Farm Harvest' }}
+      </h1>
+      <p class="text-xs text-slate-500 mt-1">Provide clear harvest details, fresh photos, and fair direct pricing.</p>
+    </div>
+
+    <a routerLink="/farmer/products" class="btn-secondary text-xs">
+      &larr; Back to Catalog
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    
+    <!-- Form Area -->
+    <div class="md:col-span-2 bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-xs space-y-5">
+      <form (ngSubmit)="onSubmit()" class="space-y-4">
+        
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Produce Name / Variety</label>
+          <input 
+            type="text" 
+            [(ngModel)]="name" 
+            name="name" 
+            required 
+            placeholder="e.g. Organic Alphonso Mangoes (Pack of 12)"
+            class="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Category</label>
+            <select 
+              [(ngModel)]="categoryId" 
+              name="categoryId" 
+              required
+              class="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500">
+              @for (cat of categories; track cat.id) {
+                <option [value]="cat.id">{{ cat.name }} ({{ cat.parent?.name || 'General' }})</option>
+              }
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Base Price (₹ per unit/kg)</label>
+            <input 
+              type="number" 
+              [(ngModel)]="price" 
+              name="price" 
+              min="1" 
+              required
+              placeholder="850"
+              class="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Available Stock Harvest Quantity</label>
+            <input 
+              type="number" 
+              [(ngModel)]="stockQuantity" 
+              name="stockQuantity" 
+              min="1" 
+              required
+              placeholder="50"
+              class="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            />
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Product Photo URL (CDN / ImageKit)</label>
+            <input 
+              type="url" 
+              [(ngModel)]="imgUrl" 
+              name="imgUrl" 
+              required
+              placeholder="https://images.unsplash.com/photo-..."
+              class="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Produce Description & Farming Methods</label>
+          <textarea 
+            [(ngModel)]="description" 
+            name="description" 
+            rows="4" 
+            required
+            placeholder="Mention natural ripening, soil fertilizers, certifications, packaging details..."
+            class="w-full p-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500">
+          </textarea>
+        </div>
+
+        <div class="pt-2">
+          <button 
+            type="submit" 
+            [disabled]="!name || !price || !categoryId || !stockQuantity"
+            class="w-full btn-primary py-3 text-xs font-bold disabled:bg-slate-300">
+            {{ isEditMode ? 'Save & Update Produce' : 'Publish Produce Listing' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Live Preview Card -->
+    <div class="space-y-4">
+      <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs space-y-3">
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Live Buyer Preview</span>
+
+        <div class="rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
+          <div class="relative pt-[70%] bg-slate-100">
+            <img 
+              [src]="imgUrl || 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=600&fit=crop'" 
+              class="absolute inset-0 w-full h-full object-cover" 
+            />
+          </div>
+          <div class="p-4 space-y-1">
+            <span class="text-[10px] font-bold text-emerald-700 uppercase">Selected Category</span>
+            <h4 class="font-bold text-sm text-slate-900 leading-snug truncate">
+              {{ name || 'Produce Variety Title' }}
+            </h4>
+            <p class="text-[11px] text-slate-500 line-clamp-2">
+              {{ description || 'Produce description will appear here to buyers.' }}
+            </p>
+            <div class="pt-2 flex items-center justify-between border-t border-slate-100 mt-2">
+              <span class="text-base font-extrabold text-slate-900 font-display">₹{{ price || 0 }}</span>
+              <span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded">
+                Stock: {{ stockQuantity || 0 }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

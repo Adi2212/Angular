@@ -1,0 +1,119 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+  
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
+    <div>
+      <h1 class="text-3xl font-extrabold font-display text-slate-900 tracking-tight">Your Farm Produce Catalog</h1>
+      <p class="text-xs text-slate-500 mt-1">Manage listings, live prices, and available harvest inventory</p>
+    </div>
+
+    <a routerLink="/farmer/products/add" class="btn-primary text-xs py-2 px-4 shadow-sm">
+      <span>+ Add New Produce</span>
+    </a>
+  </div>
+
+  <!-- Products Table -->
+  <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse text-xs">
+        <thead>
+          <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-500 uppercase tracking-wider font-semibold">
+            <th class="py-3.5 px-4 sm:px-6">Produce</th>
+            <th class="py-3.5 px-4">Category</th>
+            <th class="py-3.5 px-4">Price</th>
+            <th class="py-3.5 px-4">Available Stock</th>
+            <th class="py-3.5 px-4">Status</th>
+            <th class="py-3.5 px-4 sm:px-6 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          @for (prod of products(); track prod.id) {
+            <tr class="hover:bg-slate-50/60 transition-colors">
+              
+              <!-- Title & Image -->
+              <td class="py-3.5 px-4 sm:px-6">
+                <div class="flex items-center gap-3">
+                  <img [src]="prod.imgUrl" class="w-12 h-12 rounded-xl object-cover border border-slate-100 shrink-0" />
+                  <div>
+                    <span class="font-bold text-slate-900 text-sm block leading-snug">{{ prod.name }}</span>
+                    <span class="text-[10px] text-slate-400">ID: #{{ prod.id }}</span>
+                  </div>
+                </div>
+              </td>
+
+              <!-- Category -->
+              <td class="py-3.5 px-4">
+                <span class="font-medium text-slate-700 bg-slate-100 px-2 py-0.5 rounded text-[11px]">
+                  {{ prod.category.name }}
+                </span>
+              </td>
+
+              <!-- Price -->
+              <td class="py-3.5 px-4">
+                <span class="font-extrabold text-slate-900 font-display text-sm">
+                  ₹{{ prod.discountedPrice || prod.price }}
+                </span>
+              </td>
+
+              <!-- Stock Quantity with quick updater -->
+              <td class="py-3.5 px-4">
+                <div class="flex items-center gap-1.5">
+                  <input 
+                    type="number" 
+                    min="0"
+                    [ngModel]="prod.stockQuantity"
+                    (change)="onUpdateStock(prod, $event)"
+                    class="w-16 px-2 py-1 text-xs bg-slate-50 border border-slate-200 rounded-lg text-center font-bold text-slate-800"
+                  />
+                  <span class="text-[10px] text-slate-400">units</span>
+                </div>
+              </td>
+
+              <!-- Status Badge -->
+              <td class="py-3.5 px-4">
+                @if (prod.stockQuantity <= 0) {
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800">
+                    Out of Stock
+                  </span>
+                } @else if (prod.stockQuantity < 10) {
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">
+                    Low Stock ({{ prod.stockQuantity }})
+                  </span>
+                } @else {
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                    In Stock ({{ prod.stockQuantity }})
+                  </span>
+                }
+              </td>
+
+              <!-- Actions -->
+              <td class="py-3.5 px-4 sm:px-6 text-right">
+                <div class="inline-flex items-center gap-2">
+                  <a 
+                    [routerLink]="['/farmer/products/edit', prod.id]" 
+                    class="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:text-emerald-600 hover:border-emerald-300 transition-colors"
+                    title="Edit Produce">
+                    ✏️
+                  </a>
+                  <button 
+                    (click)="onDeleteProduct(prod.id)"
+                    class="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:text-rose-600 hover:border-rose-300 transition-colors"
+                    title="Remove Listing">
+                    🗑️
+                  </button>
+                </div>
+              </td>
+
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6" class="py-12 text-center text-slate-400">
+                No farm produce listings found. Add your first harvest!
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

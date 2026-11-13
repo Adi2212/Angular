@@ -1,0 +1,61 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+  <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+    <div>
+      <h1 class="text-3xl font-extrabold font-display text-slate-900 tracking-tight">Your Wishlist</h1>
+      <p class="text-xs text-slate-500 mt-1">Saved items you want to purchase in future harvests</p>
+    </div>
+    <span class="text-xs font-bold text-slate-600 bg-slate-100 px-3 py-1 rounded-full">
+      {{ wishlistService.count() }} Saved Items
+    </span>
+  </div>
+
+  @if (wishlistService.items().length > 0) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      @for (item of wishlistService.items(); track item.id) {
+        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden flex flex-col justify-between hover:shadow-lg transition-all">
+          <div class="relative pt-[70%] bg-slate-100">
+            <img [src]="item.imgUrl" [alt]="item.name" class="absolute inset-0 w-full h-full object-cover" />
+            <button 
+              (click)="wishlistService.removeFromWishlist(item.id).subscribe()"
+              class="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/90 text-rose-500 hover:bg-white flex items-center justify-center shadow-sm">
+              ✕
+            </button>
+          </div>
+
+          <div class="p-4 space-y-3 flex-1 flex flex-col justify-between">
+            <div>
+              <a [routerLink]="['/products', item.id]" class="font-bold text-sm text-slate-900 hover:text-emerald-600 transition-colors line-clamp-2">
+                {{ item.name }}
+              </a>
+              <span class="text-base font-extrabold text-slate-900 font-display mt-1 block">
+                ₹{{ item.price }}
+              </span>
+            </div>
+
+            <button 
+              (click)="wishlistService.moveToCart(item.id).subscribe()"
+              class="w-full btn-primary text-xs py-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
+              <span>Move to Basket</span>
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="py-20 text-center bg-white rounded-3xl border border-slate-100 max-w-xl mx-auto p-8 space-y-4">
+      <div class="w-20 h-20 mx-auto rounded-full bg-rose-50 text-rose-500 flex items-center justify-center text-3xl">
+        ❤️
+      </div>
+      <h2 class="text-xl font-bold font-display text-slate-900">Your Wishlist is Empty</h2>
+      <p class="text-xs text-slate-500 max-w-sm mx-auto">
+        You haven't saved any farm items to your wishlist yet.
+      </p>
+      <a routerLink="/products" class="btn-primary text-xs inline-flex">
+        Explore Produce
+      </a>
+    </div>
+  }
+</div>

@@ -1,0 +1,14 @@
+/* Buyer order detail styles */
+:host {
+  display: block;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .printable-area {
+    margin: 0;
+    padding: 0;
+  }
+}

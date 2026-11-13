@@ -1,0 +1,74 @@
+@if (auth.isAuthenticated()) {
+  <div class="relative inline-block text-left">
+    <!-- Bell Button -->
+    <button 
+      (click)="toggleOpen()"
+      type="button" 
+      class="relative p-2 rounded-full hover:bg-slate-100 text-slate-700 transition-colors"
+      title="Notifications">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+      </svg>
+
+      @if (unreadCount() > 0) {
+        <span class="absolute top-0 right-0 inline-flex items-center justify-center w-4 h-4 text-[10px] font-bold text-white bg-red-500 rounded-full">
+          {{ unreadCount() }}
+        </span>
+      }
+    </button>
+
+    <!-- Dropdown Menu -->
+    @if (isOpen()) {
+      <div 
+        class="fixed inset-0 z-40" 
+        (click)="isOpen.set(false)">
+      </div>
+
+      <div class="absolute right-0 mt-2 w-80 bg-white border border-slate-200 shadow-xl rounded-2xl overflow-hidden z-50 animate-fade-in">
+        <div class="flex justify-between items-center p-3.5 border-b border-slate-100 bg-slate-50">
+          <h3 class="font-bold text-sm text-slate-800">Notifications</h3>
+          @if (unreadCount() > 0) {
+            <button 
+              (click)="markAllAsRead()"
+              class="text-xs text-primary font-semibold hover:underline">
+              Mark all as read
+            </button>
+          }
+        </div>
+
+        <div class="max-h-80 overflow-y-auto divide-y divide-slate-100">
+          @for (notif of notifications(); track notif.id) {
+            <div 
+              class="p-3 text-xs flex flex-col gap-1 transition-colors"
+              [class.bg-white]="notif.read || notif.isRead"
+              [class.bg-emerald-50]="!notif.read && !notif.isRead"
+              [class.border-l-2]="!notif.read && !notif.isRead"
+              [class.border-l-primary]="!notif.read && !notif.isRead">
+              
+              <div class="flex justify-between items-start gap-2">
+                <span class="font-bold text-slate-900">{{ notif.title }}</span>
+                <span class="text-[10px] text-slate-400 shrink-0">{{ notif.createdAt | date:'short' }}</span>
+              </div>
+              
+              <p class="text-slate-600 text-[11px] leading-relaxed">{{ notif.message }}</p>
+
+              @if (!notif.read && !notif.isRead) {
+                <div class="flex justify-end pt-1">
+                  <button 
+                    (click)="markAsRead(notif.id)"
+                    class="text-[10px] text-primary font-bold hover:underline">
+                    Mark as read
+                  </button>
+                </div>
+              }
+            </div>
+          } @empty {
+            <div class="p-6 text-center text-xs text-slate-400">
+              No notifications yet.
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+}

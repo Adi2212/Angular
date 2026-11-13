@@ -1,0 +1,4 @@
+/* Farmer dashboard styles */
+:host {
+  display: block;
+}

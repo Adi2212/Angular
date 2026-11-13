@@ -281,6 +281,38 @@ Angular/
 │       ├── angular.json
 │       ├── package.json
 │       └── README.md
+├── day-9/                     # Day 9: AgriSell (Full Farm-To-Table E-Commerce Platform)
+│   ├── public/assets/
+│   ├── src/app/
+│   │   ├── core/              # Models, services (auth, cart, wishlist, notifications, products, admin), guards, interceptors
+│   │   ├── features/          # Buyer portal, farmer dashboard, admin console, marketplace, product details
+│   │   └── shared/            # Reusable navbar, footer, ratings, badges, sliders, charts
+│   ├── angular.json
+│   ├── package.json
+│   └── README.md
+├── day-10/
+│   └── weather-app/           # Day 10: Weather Pulse (Open-Meteo API, Geolocation & Signals)
+│       ├── src/app/
+│       │   ├── weather.service.ts # Geocoding & Open-Meteo forecast API service
+│       │   ├── weather.codes.ts   # WMO weather condition code mapper
+│       │   ├── app.ts             # Signal-based weather dashboard
+│       │   ├── app.html
+│       │   └── app.css
+│       ├── angular.json
+│       ├── package.json
+│       └── README.md
+├── day-11/
+│   └── todo-list/             # Day 11: TaskPulse (Angular 21 Reactive Signals Workspace)
+│       ├── src/app/
+│       │   ├── models/        # Todo, SubTask, Priority, Category, FilterOption types
+│       │   ├── services/      # TodoService (Signals state store) & StorageService (LocalStorage/JSON)
+│       │   ├── components/    # Header, TodoStats, TodoInput, TodoFilters, TodoItem, TodoList
+│       │   ├── app.component.ts
+│       │   ├── app.component.html
+│       │   └── app.component.css
+│       ├── angular.json
+│       ├── package.json
+│       └── README.md
 ├── .gitignore
 └── README.md
 ```
@@ -305,6 +337,9 @@ Angular/
 | [`day-7/p1/`](./day-7/p1) | **Angular Forms Deep Dive** | Template-Driven (`ngModel`, `ngForm`), Reactive (`FormGroup`, `FormControl`), Select List, Radio Groups, Checkboxes, Cross-Field Validation | **4200** |
 | [`day-7/p2/`](./day-7/p2) | **Routing Deep Dive** | Angular Router, `withComponentInputBinding()`, Nested Child Routes, Resolvers, Dynamic Titles, `CanDeactivateFn`, Query Params, 404 Fallback | **4200** |
 | [`day-8/p1/`](./day-8/p1) | **Lazy Loading & Deferrable Views** | Route Lazy Loading (`loadComponent`, `loadChildren`), Lazy-Loaded Services, `@defer (on viewport; prefetch on idle)`, Triggers, `@placeholder`, `@loading` | **4200** |
+| [`day-9/`](./day-9) | **AgriSell Marketplace** | Angular 18, Signals, Multi-Role Architecture (`BUYER`, `FARMER`, `ADMIN`), 100% Lazy Routes, REST API + Offline Demo Fallback | **4200** |
+| [`day-10/weather-app/`](./day-10/weather-app) | **Weather Pulse** | Angular 21, Open-Meteo REST API, Browser Geolocation, Signal-Driven 7-Day Forecast & Metrics, OnPush | **4200** |
+| [`day-11/todo-list/`](./day-11/todo-list) | **TaskPulse (Todo Workspace)** | Angular 21, Signals, `OnPush`, `@for ... track`, Subtasks, Priority & Category Filters, LocalStorage Sync & JSON Export | **4200** |
 
 ---
 
@@ -682,6 +717,60 @@ Navigate to: [http://localhost:4200/](http://localhost:4200/)
 
 ---
 
+### Day 9: AgriSell - Modern Farm-to-Table E-Commerce Platform
+A full-stack agricultural marketplace ecosystem connecting verified farmers directly with conscious consumers:
+- **Framework & State:** Angular 18 (Standalone Components, Signals, Functional Guards & Interceptors).
+- **Multi-Role Portals:** 1-Click Demo Switcher between `BUYER`, `FARMER`, and `ADMIN`.
+- **Buyer Flow:** Persistent cart, wishlist, checkout with simulated Stripe & Cash on Delivery, order tracking timeline.
+- **Farmer Portal:** Harvest inventory management, product creation form with image preview, order fulfillment queue.
+- **Admin Dashboard:** Platform revenue analytics, user moderation, product approvals, and campaign management.
+- **Dual Mode:** Connects to Spring Boot REST backend on port 9090 with seamless offline fallback demo mode.
+
+#### Running Day 9:
+```bash
+cd day-9
+npm start
+```
+Navigate to: [http://localhost:4200/](http://localhost:4200/)
+
+---
+
+### Day 10: Weather Pulse - Signal-Driven Forecast Dashboard
+A reactive weather dashboard consuming the Open-Meteo REST API:
+- **Framework:** Angular 21 with Standalone Components & `OnPush` change detection.
+- **Geolocation & Search:** Browser geolocation detection with reverse geocoding and global city autocomplete search.
+- **Reactivity:** Signal-backed `WeatherService` managing current weather conditions, WMO condition codes, hourly forecast trends, and week-ahead temperature ranges.
+- **Units:** Seamless metric (°C, km/h) and imperial (°F, mph) unit conversions.
+
+#### Running Day 10:
+```bash
+cd day-10/weather-app
+npm start
+```
+Navigate to: [http://localhost:4200/](http://localhost:4200/)
+
+---
+
+### Day 11: TaskPulse - Modern Reactive Todo Workspace
+A state-of-the-art task management application built in Angular 21 following the latest best practices:
+- **Signals Architecture:** `signal`, `computed`, and `effect` state management in `TodoService` with zero prop drilling.
+- **Change Detection:** 100% `ChangeDetectionStrategy.OnPush` across all standalone components.
+- **Task Management (CRUD):** Quick `[Enter]` task creation, double-click inline title editing, description notes, due date badges, category tags, and priority levels (`Urgent`, `High`, `Medium`, `Low`).
+- **Subtasks & Checklists:** Expandable step checklist per task with progress counters (`2/3 steps done`).
+- **Filtering & Search:** Real-time query search, status tabs (`All`, `Active`, `Done`, `Overdue`), category chips, priority pills, and sorting (`Due Date`, `Priority`, `Newest`, `Title`).
+- **Productivity Velocity:** Real-time completion progress bar, batch "Mark All Done" and "Clear Completed".
+- **Storage & Portability:** Automated `localStorage` synchronization via `effect()`, sample seed dataset with reset option, and 1-click JSON backup export/import.
+- **Accessibility:** WCAG AA compliant contrast, custom accessible checkboxes (`role="checkbox"`, `aria-checked`), full keyboard shortcuts.
+
+#### Running Day 11:
+```bash
+cd day-11/todo-list
+npm start
+```
+Navigate to: [http://localhost:4200/](http://localhost:4200/)
+
+---
+
 ## 🛠️ Build Projects
 
 ```bash
@@ -726,4 +815,13 @@ cd ../day-7/p2 && npm run build -- --configuration development
 
 # Day 8 / p1 (Advanced Routing & Resolvers)
 cd ../day-8/p1 && npm run build -- --configuration development
+
+# Day 9 (AgriSell Farm-To-Table E-Commerce Platform)
+cd ../day-9 && npm run build
+
+# Day 10 (Weather Pulse)
+cd ../day-10/weather-app && npm run build
+
+# Day 11 (TaskPulse Reactive Todo Workspace)
+cd ../day-11/todo-list && npm run build
 ```

@@ -1,0 +1,167 @@
+<div class="min-h-[85vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-xl w-full bg-white rounded-3xl p-8 border border-slate-200/80 shadow-xl space-y-6">
+    
+    <div class="text-center space-y-2">
+      <div class="w-12 h-12 mx-auto rounded-2xl bg-gradient-to-tr from-emerald-600 to-emerald-500 text-white flex items-center justify-center font-bold text-xl shadow-md shadow-emerald-600/30">
+        AS
+      </div>
+      <h2 class="text-2xl font-extrabold font-display text-slate-900 tracking-tight">Create an AgriSell Account</h2>
+      <p class="text-xs text-slate-500">Join our growing ecosystem as a customer or agricultural grower</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="space-y-4">
+      
+      <!-- Role Selector -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-700 mb-1.5">I want to register as:</label>
+        <div class="grid grid-cols-2 gap-3">
+          <label 
+            class="p-3 rounded-2xl border text-center cursor-pointer transition-all flex flex-col items-center gap-1"
+            [class.bg-emerald-50]="role === 'BUYER'"
+            [class.border-emerald-500]="role === 'BUYER'"
+            [class.border-slate-200]="role !== 'BUYER'">
+            <input type="radio" name="role" [(ngModel)]="role" value="BUYER" class="sr-only" />
+            <span class="text-xl">🛒</span>
+            <span class="font-bold text-xs text-slate-800">Consumer / Buyer</span>
+            <span class="text-[10px] text-slate-500">Buy fresh farm products</span>
+          </label>
+
+          <label 
+            class="p-3 rounded-2xl border text-center cursor-pointer transition-all flex flex-col items-center gap-1"
+            [class.bg-emerald-50]="role === 'FARMER'"
+            [class.border-emerald-500]="role === 'FARMER'"
+            [class.border-slate-200]="role !== 'FARMER'">
+            <input type="radio" name="role" [(ngModel)]="role" value="FARMER" class="sr-only" />
+            <span class="text-xl">🌾</span>
+            <span class="font-bold text-xs text-slate-800">Farmer / Producer</span>
+            <span class="text-[10px] text-slate-500">Sell harvest without brokers</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Basic Info -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Full Name</label>
+          <input 
+            type="text" 
+            [(ngModel)]="name" 
+            name="name" 
+            required 
+            placeholder="Ramesh Kumar"
+            class="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Email Address</label>
+          <input 
+            type="email" 
+            [(ngModel)]="email" 
+            name="email" 
+            required 
+            placeholder="ramesh@example.com"
+            class="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Phone Number (10 Digits)</label>
+          <input 
+            type="tel" 
+            [(ngModel)]="phone" 
+            name="phone" 
+            required 
+            maxlength="10"
+            placeholder="9876543210"
+            class="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Password (min 6 chars)</label>
+          <input 
+            type="password" 
+            [(ngModel)]="password" 
+            name="password" 
+            required 
+            minlength="6"
+            placeholder="••••••••"
+            class="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          />
+        </div>
+      </div>
+
+      <!-- Address details -->
+      <div class="pt-2 border-t border-slate-100 space-y-3">
+        <span class="text-xs font-bold text-slate-800 uppercase tracking-wide block">
+          {{ role === 'FARMER' ? 'Farm Location Address' : 'Delivery Address' }}
+        </span>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Street Address</label>
+          <input 
+            type="text" 
+            [(ngModel)]="street" 
+            name="street" 
+            placeholder="12 Green Valley Farm / Flat 302, Green Heights"
+            class="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          />
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">City</label>
+            <input 
+              type="text" 
+              [(ngModel)]="city" 
+              name="city" 
+              required
+              placeholder="Nashik"
+              class="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            />
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">State</label>
+            <input 
+              type="text" 
+              [(ngModel)]="state" 
+              name="state" 
+              required
+              placeholder="Maharashtra"
+              class="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            />
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Postal Code</label>
+            <input 
+              type="text" 
+              [(ngModel)]="postalCode" 
+              name="postalCode" 
+              required
+              placeholder="422001"
+              class="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      <button 
+        type="submit" 
+        [disabled]="!name || !email || !password || !phone"
+        class="w-full btn-primary py-2.5 text-sm font-bold shadow-md shadow-emerald-700/20 disabled:bg-slate-300">
+        Create {{ role === 'FARMER' ? 'Farmer Producer' : 'Buyer' }} Account
+      </button>
+    </form>
+
+    <p class="text-center text-xs text-slate-500 pt-2 border-t border-slate-100">
+      Already have an account? 
+      <a routerLink="/auth/login" class="font-bold text-emerald-600 hover:underline">Sign In</a>
+    </p>
+
+  </div>
+</div>

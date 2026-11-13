@@ -1,0 +1,38 @@
+@if (isStandaloneRoute()) {
+  <!-- Standalone full-screen pages (Login, Register, AddAddress, Payment) -->
+  <main class="min-h-screen bg-background">
+    <router-outlet></router-outlet>
+  </main>
+} @else {
+  <!-- Full Layout matching React Layout.jsx -->
+  <div class="min-h-screen bg-background text-foreground">
+    <!-- Left Sidebar -->
+    <app-sidebar 
+      [title]="title"
+      [isOpen]="isSidebarOpen()"
+      (close)="closeSidebar()">
+    </app-sidebar>
+
+    <!-- Main Content Area with lg:ml-64 offset -->
+    <div class="lg:ml-64 flex flex-col min-h-screen">
+      <!-- Top Navbar -->
+      <app-navbar (toggleSidebar)="toggleSidebar()"></app-navbar>
+
+      <!-- Page Content -->
+      <main class="flex-1 p-4 sm:p-6">
+        <router-outlet></router-outlet>
+      </main>
+
+      <!-- Footer -->
+      <app-footer></app-footer>
+    </div>
+  </div>
+}
+
+<!-- Global Floating Theme Toggle matching React App.jsx (fixed bottom-4 left-4 z-50) -->
+<div class="fixed bottom-4 left-4 z-50">
+  <app-theme-toggle></app-theme-toggle>
+</div>
+
+<!-- Toast Notifications -->
+<app-toast-container></app-toast-container>

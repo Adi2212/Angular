@@ -1,0 +1,100 @@
+<main class="stage" [attr.data-theme]="condition().theme" [attr.aria-busy]="loading()">
+  <header class="bar">
+    <form class="search" role="search" (submit)="onSubmit($event)">
+      <label class="sr-only" for="city">City</label>
+      <input
+        id="city"
+        type="search"
+        autocomplete="off"
+        placeholder="Search for a city"
+        [value]="query()"
+        (input)="query.set($any($event.target).value)"
+      />
+      <button type="submit">Search</button>
+      <button type="button" class="ghost" (click)="useMyLocation()">Use my location</button>
+    </form>
+
+    <div class="units" role="group" aria-label="Units">
+      <button type="button" [attr.aria-pressed]="unit() === 'metric'" (click)="setUnit('metric')">°C</button>
+      <button type="button" [attr.aria-pressed]="unit() === 'imperial'" (click)="setUnit('imperial')">°F</button>
+    </div>
+  </header>
+
+  @if (suggestions().length) {
+    <section class="suggestions" aria-label="Matching places">
+      <p>Which one did you mean?</p>
+      <ul>
+        @for (s of suggestions(); track s.latitude + ',' + s.longitude) {
+          <li>
+            <button type="button" (click)="selectPlace(s)">
+              <strong>{{ s.name }}</strong>
+              <span>{{ s.region }}</span>
+            </button>
+          </li>
+        }
+      </ul>
+    </section>
+  }
+
+  @if (error()) {
+    <p class="error" role="alert">{{ error() }}</p>
+  }
+
+  @if (weather(); as w) {
+    <section class="now" [class.stale]="loading()">
+      <h1>
+        {{ place()?.name }}
+        @if (place()?.region) {
+          <small>{{ place()?.region }}</small>
+        }
+      </h1>
+
+      <p class="temp" [attr.aria-label]="w.current.temp + ' degrees'">
+        {{ w.current.temp }}<span class="deg">{{ w.units.temp }}</span>
+      </p>
+
+      <p class="condition"><span aria-hidden="true">{{ condition().icon }}</span> {{ condition().label }}</p>
+
+      <dl class="stats">
+        <div>
+          <dt>Feels like</dt>
+          <dd>{{ w.current.feelsLike }}{{ w.units.temp }}</dd>
+        </div>
+        <div>
+          <dt>Humidity</dt>
+          <dd>{{ w.current.humidity }}%</dd>
+        </div>
+        <div>
+          <dt>Wind</dt>
+          <dd>{{ w.current.wind }} {{ w.units.wind }}</dd>
+        </div>
+        <div>
+          <dt>Rain now</dt>
+          <dd>{{ w.current.precipitation }} {{ w.units.rain }}</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="week" aria-label="7-day forecast">
+      <ul>
+        @for (d of days(); track d.date) {
+          <li>
+            <span class="day">{{ d.label }}</span>
+            <span class="ico" aria-hidden="true">{{ d.condition.icon }}</span>
+            <span class="sr-only">{{ d.condition.label }},</span>
+            <span class="rain" [class.dim]="d.rainChance < 20">{{ d.rainChance }}% rain</span>
+            <span class="lo">{{ d.min }}°</span>
+            <span class="range" aria-hidden="true">
+              <i [style.left.%]="d.left" [style.width.%]="d.width"></i>
+            </span>
+            <span class="hi">{{ d.max }}°</span>
+          </li>
+        }
+      </ul>
+    </section>
+  } @else if (loading()) {
+    <p class="status">Loading forecast…</p>
+  }
+
+  <footer>Weather data by <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a></footer>
+</main>

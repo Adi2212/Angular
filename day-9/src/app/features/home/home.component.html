@@ -1,0 +1,47 @@
+<div class="max-w-7xl mx-auto space-y-6">
+  <!-- Banner Slider matching React Home.jsx -->
+  <app-banner-slider></app-banner-slider>
+
+  <!-- Main Content -->
+  <main id="featured-products" class="px-2 sm:px-4 py-2 space-y-6">
+    <div class="flex items-center justify-between pb-2 border-b border-border">
+      <h2 class="text-xl sm:text-2xl font-bold text-foreground">
+        Featured Farm Produce
+      </h2>
+      <a routerLink="/categories" class="text-xs text-primary font-bold hover:underline">
+        Browse by Category &rarr;
+      </a>
+    </div>
+
+    <!-- Loading -->
+    @if (loading()) {
+      <div class="flex justify-center items-center py-20 text-sm text-muted-foreground">
+        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+        </svg>
+        Loading products directly from farms...
+      </div>
+    }
+
+    <!-- Error -->
+    @if (!loading() && error()) {
+      <div class="flex justify-center items-center py-20 text-red-600 font-semibold text-sm">
+        {{ error() }}
+      </div>
+    }
+
+    <!-- Products Grid matching React Home.jsx (grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6) -->
+    @if (!loading() && !error()) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (product of filteredProducts(); track product.id) {
+          <app-product-card [product]="product"></app-product-card>
+        } @empty {
+          <div class="col-span-full py-20 text-center text-muted-foreground">
+            No products match your search. Try another harvest term.
+          </div>
+        }
+      </div>
+    }
+  </main>
+</div>

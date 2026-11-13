@@ -1,0 +1,143 @@
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+  
+  <div>
+    <h1 class="text-3xl font-extrabold font-display text-slate-900 tracking-tight">Account & Profile</h1>
+    <p class="text-xs text-slate-500 mt-1">Manage your customer credentials, delivery address, and preferences</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+    
+    <!-- Left: Profile Avatar Card -->
+    <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs text-center space-y-4">
+      <div class="relative w-24 h-24 mx-auto">
+        <img 
+          [src]="auth.currentUser()?.profileUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&h=200&fit=crop'" 
+          class="w-full h-full rounded-full object-cover border-4 border-emerald-100 shadow-md"
+        />
+      </div>
+
+      <div>
+        <h2 class="text-lg font-bold font-display text-slate-900">{{ auth.currentUser()?.name }}</h2>
+        <p class="text-xs text-slate-500">{{ auth.currentUser()?.email }}</p>
+        <span class="inline-block mt-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800">
+          Role: {{ auth.role() }}
+        </span>
+      </div>
+
+      <!-- Quick Avatar Update URL -->
+      <div class="pt-3 border-t border-slate-100 text-left">
+        <label class="block text-[11px] font-semibold text-slate-600 mb-1">Avatar Image URL</label>
+        <div class="flex gap-2">
+          <input 
+            type="text" 
+            [(ngModel)]="avatarUrl" 
+            placeholder="https://..."
+            class="flex-1 px-2.5 py-1 text-xs bg-slate-50 border border-slate-200 rounded-lg"
+          />
+          <button (click)="onUpdateAvatar()" class="btn-primary text-xs py-1 px-2.5">
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Edit Details & Address -->
+    <div class="md:col-span-2 space-y-6">
+      
+      <!-- Personal Info Form -->
+      <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-4">
+        <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wide">Personal Details</h3>
+        
+        <form (ngSubmit)="onSaveProfile()" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Full Name</label>
+              <input 
+                type="text" 
+                [(ngModel)]="name" 
+                name="name" 
+                required 
+                class="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Phone Number</label>
+              <input 
+                type="tel" 
+                [(ngModel)]="phone" 
+                name="phone" 
+                required 
+                class="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              />
+            </div>
+          </div>
+
+          <div class="flex justify-end">
+            <button type="submit" class="btn-primary text-xs py-2 px-4">
+              Update Profile
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Address Form -->
+      <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-4">
+        <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wide">Delivery Address Book</h3>
+        
+        <form (ngSubmit)="onSaveAddress()" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Street / House No</label>
+            <input 
+              type="text" 
+              [(ngModel)]="address.street" 
+              name="street" 
+              class="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            />
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">City</label>
+              <input 
+                type="text" 
+                [(ngModel)]="address.city" 
+                name="city" 
+                required
+                class="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">State</label>
+              <input 
+                type="text" 
+                [(ngModel)]="address.state" 
+                name="state" 
+                required
+                class="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Postal Code</label>
+              <input 
+                type="text" 
+                [(ngModel)]="address.postalCode" 
+                name="postalCode" 
+                required
+                class="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              />
+            </div>
+          </div>
+
+          <div class="flex justify-end">
+            <button type="submit" class="btn-primary text-xs py-2 px-4">
+              Save Address
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

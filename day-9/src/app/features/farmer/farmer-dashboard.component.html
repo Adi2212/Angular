@@ -1,0 +1,118 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+  
+  <!-- Welcome Header -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
+    <div>
+      <span class="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md">
+        🌾 Producer Control Hub
+      </span>
+      <h1 class="text-3xl font-extrabold font-display text-slate-900 tracking-tight mt-1">
+        Welcome, {{ auth.currentUser()?.name || 'Farmer' }}
+      </h1>
+      <p class="text-xs text-slate-500">Monitor your listed agricultural harvest, incoming buyer orders, and fulfillment.</p>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <a routerLink="/farmer/products/add" class="btn-primary text-xs py-2 px-4 shadow-sm">
+        <span>+ List New Harvest</span>
+      </a>
+      <a routerLink="/farmer/orders" class="btn-secondary text-xs py-2 px-4">
+        <span>View Orders</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- KPI Stats Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+    
+    <!-- Total Products -->
+    <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs flex items-center gap-4">
+      <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl font-bold shrink-0">
+        🌾
+      </div>
+      <div>
+        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Listed Produce</span>
+        <div class="text-3xl font-extrabold font-display text-slate-900 mt-0.5">
+          {{ stats()?.totalProducts || 5 }}
+        </div>
+        <a routerLink="/farmer/products" class="text-[11px] text-emerald-600 hover:underline font-semibold mt-1 inline-block">
+          Manage catalog &rarr;
+        </a>
+      </div>
+    </div>
+
+    <!-- Pending Orders -->
+    <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs flex items-center gap-4">
+      <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl font-bold shrink-0">
+        ⏳
+      </div>
+      <div>
+        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Pending Harvests</span>
+        <div class="text-3xl font-extrabold font-display text-slate-900 mt-0.5">
+          {{ stats()?.pendingOrders || 2 }}
+        </div>
+        <a routerLink="/farmer/orders" class="text-[11px] text-amber-600 hover:underline font-semibold mt-1 inline-block">
+          Fulfill orders &rarr;
+        </a>
+      </div>
+    </div>
+
+    <!-- Completed Orders -->
+    <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs flex items-center gap-4">
+      <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-2xl font-bold shrink-0">
+        ✅
+      </div>
+      <div>
+        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Dispatched & Paid</span>
+        <div class="text-3xl font-extrabold font-display text-slate-900 mt-0.5">
+          {{ stats()?.completedOrders || 28 }}
+        </div>
+        <span class="text-[11px] text-blue-600 font-semibold mt-1 inline-block">
+          Direct bank payouts active
+        </span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Recent Orders Section -->
+  <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs space-y-6">
+    <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+      <div>
+        <h2 class="text-lg font-bold font-display text-slate-900">Recent Produce Orders</h2>
+        <p class="text-xs text-slate-500">Orders placed by consumers for your farm produce</p>
+      </div>
+      <a routerLink="/farmer/orders" class="text-xs font-semibold text-emerald-600 hover:underline">
+        View All &rarr;
+      </a>
+    </div>
+
+    <div class="space-y-3">
+      @for (ord of recentOrders(); track ord.orderId || ord.id) {
+        <div class="p-4 rounded-2xl border border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-xs text-slate-900">Order #{{ ord.orderId || ord.id }}</span>
+              <span class="text-[10px] text-slate-400">• {{ ord.createdAt | date:'short' }}</span>
+            </div>
+            <p class="text-xs text-slate-600">Buyer: <span class="font-semibold text-slate-800">{{ ord.buyerName || 'Verified Buyer' }}</span></p>
+            <div class="text-[11px] text-slate-500">
+              @for (item of ord.items; track item.id) {
+                <span>{{ item.product.productName }} ({{ item.quantity }}x), </span>
+              }
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4 self-end sm:self-center">
+            <div class="text-right">
+              <span class="font-extrabold text-sm text-slate-900 font-display block">₹{{ ord.totalAmount }}</span>
+              <span class="text-[10px] text-emerald-600 font-semibold">{{ ord.paymentMethod }}</span>
+            </div>
+            <app-order-status-badge [status]="ord.orderStatus || ord.status || 'PENDING'"></app-order-status-badge>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+</div>

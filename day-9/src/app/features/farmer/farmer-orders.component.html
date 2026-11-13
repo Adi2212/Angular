@@ -1,0 +1,100 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+  
+  <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+    <div>
+      <h1 class="text-3xl font-extrabold font-display text-slate-900 tracking-tight">Received Harvest Orders</h1>
+      <p class="text-xs text-slate-500 mt-1">Review orders placed by buyers for your produce and update fulfillment stages.</p>
+    </div>
+  </div>
+
+  <div class="space-y-4">
+    @for (ord of orders(); track ord.orderId || ord.id) {
+      <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-5">
+        
+        <!-- Order Header -->
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-100">
+          <div>
+            <span class="font-bold text-sm text-slate-900">Order #{{ ord.orderId || ord.id }}</span>
+            <span class="text-xs text-slate-400 ml-2">• Placed: {{ ord.createdAt | date:'medium' }}</span>
+          </div>
+
+          <!-- Status & Quick Status Update -->
+          <div class="flex items-center gap-3">
+            <app-order-status-badge [status]="ord.orderStatus || ord.status || 'PENDING'"></app-order-status-badge>
+            
+            <select 
+              [ngModel]="ord.orderStatus || ord.status"
+              (ngModelChange)="onUpdateStatus(ord.orderId || ord.id!, $event)"
+              class="text-xs font-bold bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1 focus:ring-1 focus:ring-emerald-500">
+              <option value="PENDING">PENDING</option>
+              <option value="CONFIRMED">CONFIRMED</option>
+              <option value="SHIPPED">SHIPPED</option>
+              <option value="DELIVERED">DELIVERED</option>
+              <option value="CANCELLED">CANCELLED</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Customer Details & Items -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- Left: Items requested -->
+          <div class="space-y-3">
+            <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wide">Produce Items for Harvest</h4>
+            <div class="space-y-2">
+              @for (item of ord.items; track item.id || item.product.productId) {
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between text-xs">
+                  <div class="flex items-center gap-2.5">
+                    @if (item.product.imgUrl) {
+                      <img [src]="item.product.imgUrl" class="w-10 h-10 rounded-lg object-cover" />
+                    }
+                    <div>
+                      <p class="font-bold text-slate-800">{{ item.product.productName }}</p>
+                      <span class="text-slate-500">Qty Needed: <strong class="text-emerald-700">{{ item.quantity }}</strong> units</span>
+                    </div>
+                  </div>
+                  <span class="font-extrabold text-slate-900 font-display">₹{{ item.lineTotal || (item.price * item.quantity) }}</span>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Right: Buyer Contact & Delivery Destination -->
+          <div class="p-4 rounded-2xl bg-slate-50/70 border border-slate-100 flex flex-col justify-between text-xs space-y-3">
+            <div>
+              <h4 class="font-bold text-slate-800 text-sm mb-1">Customer Logistics</h4>
+              <p class="text-slate-700 font-semibold">{{ ord.buyerName || 'Verified Buyer' }}</p>
+              <p class="text-slate-500 mt-1">
+                {{ ord.deliveryAddress.street }}<br>
+                {{ ord.deliveryAddress.city }}, {{ ord.deliveryAddress.state }} - {{ ord.deliveryAddress.postalCode }}
+              </p>
+            </div>
+
+            <div class="flex items-center justify-between pt-3 border-t border-slate-200">
+              <div class="flex items-center gap-2">
+                <a href="tel:9876543210" class="btn-secondary text-[11px] py-1 px-2.5">
+                  📞 Call Buyer
+                </a>
+                <a href="https://wa.me/919876543210" target="_blank" class="px-2.5 py-1 rounded-lg bg-emerald-600 text-white font-semibold text-[11px] hover:bg-emerald-700 transition-colors">
+                  💬 WhatsApp
+                </a>
+              </div>
+
+              <div class="text-right">
+                <span class="text-[10px] text-slate-400 uppercase font-semibold">Total Revenue</span>
+                <span class="text-base font-extrabold text-slate-900 font-display block">₹{{ ord.totalAmount }}</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    } @empty {
+      <div class="py-16 text-center bg-white rounded-3xl border border-slate-100">
+        <p class="text-xs text-slate-500">No active produce orders received yet.</p>
+      </div>
+    }
+  </div>
+
+</div>

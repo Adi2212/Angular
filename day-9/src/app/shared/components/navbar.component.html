@@ -1,0 +1,102 @@
+<header class="h-16 bg-background border-b border-border sticky top-0 z-30 flex items-center px-4">
+  <!-- LEFT: Mobile Menu Button -->
+  <div class="flex items-center gap-3 w-1/4">
+    <button 
+      type="button"
+      (click)="toggleSidebar.emit()"
+      class="lg:hidden p-2 rounded-xl text-foreground hover:bg-secondary/20 transition-colors"
+      title="Toggle Navigation Menu">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- CENTER: Search Input -->
+  <div class="flex-1 flex justify-center">
+    <div class="relative w-full max-w-md">
+      <svg 
+        class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" 
+        fill="none" 
+        stroke="currentColor" 
+        viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+      <input 
+        type="text" 
+        [ngModel]="searchService.query()" 
+        (ngModelChange)="onSearchChange($event)"
+        placeholder="Search harvests, organic produce..."
+        class="w-full pl-10 pr-4 py-2 text-xs bg-muted/40 border border-border rounded-full focus:bg-background focus:outline-none focus:ring-1 focus:ring-primary text-foreground transition-all"
+      />
+    </div>
+  </div>
+
+  <!-- RIGHT: Action Icons -->
+  <div class="flex items-center justify-end gap-2.5 sm:gap-3 w-1/4">
+    <!-- Cart Button -->
+    <button
+      type="button"
+      (click)="onCartClick()"
+      class="relative p-2 rounded-full hover:bg-secondary/20 transition-colors text-foreground"
+      title="Cart">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+      </svg>
+      @if (cartService.count() > 0) {
+        <span class="absolute top-0 right-0 inline-flex items-center justify-center w-4 h-4 text-[10px] font-bold text-white bg-primary rounded-full">
+          {{ cartService.count() }}
+        </span>
+      }
+    </button>
+
+    <!-- Wishlist Button (for BUYER or visitor) -->
+    @if (!auth.isAuthenticated() || auth.isBuyer()) {
+      <button
+        type="button"
+        (click)="onWishlistClick()"
+        class="relative p-2 rounded-full hover:bg-secondary/20 transition-colors text-foreground"
+        title="Wishlist">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
+        @if (wishlistService.count() > 0) {
+          <span class="absolute top-0 right-0 inline-flex items-center justify-center w-4 h-4 text-[10px] font-bold text-white bg-rose-500 rounded-full">
+            {{ wishlistService.count() }}
+          </span>
+        }
+      </button>
+    }
+
+    <!-- Notification Dropdown -->
+    <app-notification-dropdown></app-notification-dropdown>
+
+    <!-- Profile Avatar or Login Button -->
+    @if (!auth.isAuthenticated()) {
+      <a 
+        routerLink="/login"
+        class="px-4 py-1.5 text-xs font-semibold border border-border rounded-full hover:bg-secondary/20 text-foreground transition-colors">
+        Login
+      </a>
+    } @else {
+      <button
+        type="button"
+        (click)="onProfileClick()"
+        class="w-9 h-9 rounded-full overflow-hidden border border-border flex items-center justify-center bg-muted hover:ring-2 hover:ring-primary transition-all"
+        title="Account Details">
+        @if (auth.currentUser()?.profileUrl && !imgError()) {
+          <img 
+            [src]="auth.currentUser()?.profileUrl" 
+            alt="Profile"
+            (error)="imgError.set(true)"
+            class="w-full h-full object-cover" 
+          />
+        } @else {
+          <span class="font-bold text-xs text-primary">
+            {{ auth.currentUser()?.name?.charAt(0) || 'U' }}
+          </span>
+        }
+      </button>
+    }
+  </div>
+</header>

@@ -1,0 +1,10 @@
+<span 
+  class="px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider"
+  [ngClass]="{
+    'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400': status() === 'PAID' || status() === 'SUCCESS',
+    'bg-amber-100 text-amber-800 dark:bg-amber-950/50 dark:text-amber-400': status() === 'PENDING' || status() === 'PENDING_PAYMENT',
+    'bg-rose-100 text-rose-800 dark:bg-rose-950/50 dark:text-rose-400': status() === 'FAILED',
+    'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-400': !status() || (status() !== 'PAID' && status() !== 'PENDING' && status() !== 'FAILED')
+  }">
+  {{ status() || 'UNKNOWN' }}
+</span>

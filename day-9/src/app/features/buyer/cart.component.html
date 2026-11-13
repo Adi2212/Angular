@@ -1,0 +1,152 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  
+  <div class="flex items-center justify-between mb-8 pb-4 border-b border-slate-200">
+    <div>
+      <h1 class="text-3xl font-extrabold font-display text-slate-900 tracking-tight">Your Farm Basket</h1>
+      <p class="text-xs text-slate-500 mt-1">Direct produce harvested from verified independent farmers</p>
+    </div>
+    @if (cartService.items().length > 0) {
+      <button (click)="cartService.clearCart().subscribe()" class="text-xs text-rose-600 hover:underline">
+        Empty Basket
+      </button>
+    }
+  </div>
+
+  @if (cartService.items().length > 0) {
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- Items List -->
+      <div class="lg:col-span-2 space-y-4">
+        @for (item of cartService.items(); track item.id) {
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center gap-4 hover:border-slate-300 transition-colors">
+            
+            <!-- Product Thumbnail -->
+            <img 
+              [src]="item.imgUrl" 
+              [alt]="item.name" 
+              class="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover border border-slate-100 shrink-0"
+            />
+
+            <!-- Info -->
+            <div class="flex-1 min-w-0">
+              <a [routerLink]="['/products', item.id]" class="font-bold text-sm sm:text-base text-slate-900 hover:text-emerald-600 transition-colors truncate block">
+                {{ item.name }}
+              </a>
+              <span class="text-xs text-slate-500">Price: ₹{{ item.price }} per unit</span>
+              
+              <div class="flex items-center justify-between mt-3">
+                <!-- Qty Controls -->
+                <div class="flex items-center border border-slate-200 rounded-lg bg-slate-50 overflow-hidden">
+                  <button 
+                    (click)="cartService.updateQuantity(item.id, item.qty - 1).subscribe()"
+                    class="px-2.5 py-1 text-slate-600 hover:bg-slate-200 text-xs font-bold">
+                    -
+                  </button>
+                  <span class="px-3 py-1 text-xs font-bold text-slate-800">{{ item.qty }}</span>
+                  <button 
+                    (click)="cartService.updateQuantity(item.id, item.qty + 1).subscribe()"
+                    class="px-2.5 py-1 text-slate-600 hover:bg-slate-200 text-xs font-bold">
+                    +
+                  </button>
+                </div>
+
+                <!-- Line Total & Remove -->
+                <div class="flex items-center gap-4">
+                  <span class="text-base font-extrabold text-slate-900 font-display">
+                    ₹{{ item.price * item.qty }}
+                  </span>
+                  <button 
+                    (click)="cartService.removeFromCart(item.id).subscribe()"
+                    class="text-slate-400 hover:text-rose-600 transition-colors"
+                    title="Remove item">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        }
+      </div>
+
+      <!-- Order Summary Card -->
+      <div class="space-y-4">
+        <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-4">
+          <h2 class="font-bold text-base font-display text-slate-900">Order Summary</h2>
+
+          <div class="space-y-2.5 text-xs text-slate-600 pb-4 border-b border-slate-100">
+            <div class="flex justify-between">
+              <span>Subtotal ({{ cartService.count() }} items)</span>
+              <span class="font-semibold text-slate-900">₹{{ cartService.subtotal() }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Farm Dispatch & Delivery</span>
+              @if (cartService.deliveryFee() === 0) {
+                <span class="font-semibold text-emerald-600">FREE</span>
+              } @else {
+                <span class="font-semibold text-slate-900">₹{{ cartService.deliveryFee() }}</span>
+              }
+            </div>
+            @if (cartService.subtotal() < 500) {
+              <p class="text-[11px] text-amber-700 bg-amber-50 p-2 rounded-lg">
+                Add ₹{{ 500 - cartService.subtotal() }} more produce for Free Delivery!
+              </p>
+            }
+          </div>
+
+          <div class="flex justify-between items-baseline pt-1">
+            <span class="text-sm font-bold text-slate-800">Total Due</span>
+            <span class="text-2xl font-extrabold text-slate-900 font-display">
+              ₹{{ cartService.total() }}
+            </span>
+          </div>
+
+          <!-- Address Preview -->
+          @if (auth.currentUser()?.address; as addr) {
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-600">
+              <span class="font-bold text-slate-800 block mb-0.5">Shipping to:</span>
+              <p class="truncate">{{ addr.street }}, {{ addr.city }}, {{ addr.state }} - {{ addr.postalCode }}</p>
+            </div>
+          }
+
+          <!-- Checkout CTA -->
+          <button 
+            (click)="proceedToCheckout()"
+            class="w-full btn-primary py-3 text-sm font-bold shadow-md shadow-emerald-700/20">
+            Proceed to Checkout &rarr;
+          </button>
+
+          <div class="text-[11px] text-slate-400 text-center space-y-1">
+            <p>🔒 256-Bit Encrypted Secure Checkout</p>
+            <p>Supports Stripe & Cash on Delivery</p>
+          </div>
+        </div>
+
+        <!-- Back to shop link -->
+        <div class="text-center">
+          <a routerLink="/products" class="text-xs text-emerald-600 hover:underline font-semibold">
+            &larr; Continue shopping produce
+          </a>
+        </div>
+      </div>
+
+    </div>
+  } @else {
+    <!-- Empty Basket -->
+    <div class="py-20 text-center bg-white rounded-3xl border border-slate-100 max-w-xl mx-auto p-8 space-y-4">
+      <div class="w-20 h-20 mx-auto rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center text-3xl">
+        🧺
+      </div>
+      <h2 class="text-xl font-bold font-display text-slate-900">Your Basket is Empty</h2>
+      <p class="text-xs text-slate-500 max-w-sm mx-auto">
+        Looks like you haven't added any farm-fresh fruits, grains, or vegetables yet.
+      </p>
+      <a routerLink="/products" class="btn-primary text-xs inline-flex">
+        Browse Fresh Harvest
+      </a>
+    </div>
+  }
+
+</div>
